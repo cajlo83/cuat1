@@ -30,17 +30,28 @@ int main(void) {
 	setbuf(stdout, NULL);
 
 	int a;
+	int b;
+	int c;
 
-	a=intScan("ingresa el numero por favor, entre 5 y 80");
-
-	if(intVerify(a, 5, 80))
-		printf("\nno cumpliste la solicitud");
-	else
-		printf("\ncumpliste la solicitud");
-
+	// Sumar1
+	a=intScan("int Sumar1(int, int)\ningrese a: ");
+	b=intScan("\ningrese b: ");
+	c=Sumar1(a, b);
+	printf("\nla suma de int Sumar1(int, int) es: %d", c);
 
 
+	// Sumar2
+	c=Sumar2();
+	printf("\nla suma de int Sumar2(void) es: %d", c);
 
+	// Sumar3
+	Sumar3(a, b);
+
+	// Sumar4
+	Sumar4();
+
+
+	return 0;
 }
 
 int Sumar1(int a, int b){
@@ -57,8 +68,8 @@ int Sumar2(void){
 	int b;
 	int c;
 
-	a=intScan("\nint Sumar2(void)\n ingrese a: ");
-	b=intScan("\ingrese b: ");
+	a=intScan("\n\nint Sumar2(void)\n ingrese a: ");
+	b=intScan("\ningrese b: ");
 
 	c=a+b;
 
@@ -71,7 +82,7 @@ void Sumar3(int a, int b){
 	int c;
 	c=a+b;
 
-	printf("\nvoid Sumar3(int a, int b): ");
+	printf("\nel resultado de void Sumar3(int a, int b) es: %d", c);
 }
 
 
@@ -83,7 +94,7 @@ void Sumar4(void){
 	a=intScan("\nvoid Sumar4(void)\ningrese a:");
 	b=intScan("ingrese b: ");
 
-	printf("\nvoid Sumar4(void) = %d", a+b )
+	printf("\n\nla suma de void Sumar4(void) es: %d", a+b );
 
 }
 
