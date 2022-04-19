@@ -29,7 +29,7 @@ int intVerify(int numero, int minimo, int maximo);
 int floatVerify(float numero, int minimo, int maximo);
 
 /**
- * @brief devuelve 1 o 0 a un banderin para determinar si debe continuar un bucle
+ * @brief hace un calculo correspondiente entre a y b dependiendo del parametro de operacion
  *
  * @param a valor a
  * @param b valor b
@@ -71,12 +71,13 @@ void introContinue(char *mensaje);
 void vecIntScan(int vector[], int size);
 
 /**
- * @brief recorre un vector tipo int y muestra su contenido
+ * @brief recorre un vector tipo int desde la posicion start hasta la posicion finish y muestra su contenido
  *
  * @param vector nombre del vector
- * @param size tamaño del vector
+ * @param start posicion de inicio de impresion
+ * @param finish posicion de fin de impresion
  */
-void vecIntShow(int vector[], int size);
+void vecIntShow(int vector[],int start, int finish);
 
 /**
  * @brief verifica si un numero es par o no.
@@ -93,7 +94,7 @@ int isPair(int num);
  * @param len tamaño del vector
  * @param dir ordenamiento ascendente si dir>=0, descendente si dir<0
  */
-void ordenaVectorEntero(int vector[], int len, int dir);
+void vecIntSort(int vector[], int len, int dir);
 
 /**
  * @brief muestra los valores repetidos en un arreglo de enteros
@@ -113,7 +114,7 @@ void cleanIntArray(int vector[], int len);
 
 /**
  * @brief retorna un entero random en un intervalo dado (inclusive).
- * recordar combinar con {#include <time.h>} y {consrand(time(NULL));}
+ * recordar combinar con {#include <time.h>} y {srand(time(NULL));}
  *
  * @param random
  * @param minimo valor minimo del intervalo

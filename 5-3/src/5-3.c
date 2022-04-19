@@ -39,7 +39,7 @@ int main(void){
 
 	for(i=0; i<V_LON;i++){
 
-		vector[i]=randomInt(rand(),-50, 50);
+		vector[i]=randomInt(-50, 50);
 
 		if(intVerify(vector[i], 1, 0)){
 			canPos++;

@@ -157,14 +157,29 @@ void vecIntScan(int vector[], int size){
 
 
 
-void vecIntShow(int vector[], int size){
+void vecIntShow(int vector[],int start, int finish){
 
 	int i;
-	for(i=0;i<size;i++){
 
+	if(start<finish){
+
+		for(i=start;i<finish;i++){
 		printf("\nposicion[%d] = %d", i, vector[i]);
+		}
 	}
 
+	else if(start>finish){
+
+		for(i=start;i>finish;i--){
+		printf("\nposicion[%d] = %d", i, vector[i]);
+		}
+	}
+
+	else if(start==finish){
+
+		i=start;
+		printf("\nposicion[%d] = %d", i, vector[i]);
+	}
 }
 
 int isPair(int num){
@@ -182,7 +197,7 @@ int isPair(int num){
 
 }
 
-void ordenaVectorEntero(int vector[], int len, int dir){
+void vecIntSort(int vector[], int len, int dir){
 	int i, j, aux;
 
 	if (dir>=0){
