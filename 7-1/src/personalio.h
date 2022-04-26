@@ -132,4 +132,13 @@ void cleanIntArray(int vector[], int len);
  */
 int randomInt(int minimo, int maximo);
 
+/**
+ * @brief despliega una lista enumerada de opciones y retorna la opcion seleccionada
+ *
+ * @param opciones mensaje con lista de opciones
+ * @return valor tipo entero
+ */
+int menu( char opciones[]  );
+
+
 #endif /* PERSONALIO_H_ */

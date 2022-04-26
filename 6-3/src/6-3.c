@@ -5,12 +5,12 @@
  Version     :
  Copyright   : Your copyright notice
  Description : Ejercicio 6-3:
-Pedirle al usuario su nombre y apellido (en variables separadas, una para el nombre y otra para el
+Pedirle al usuario su descripcion y apellido (en variables separadas, una para el descripcion y otra para el
 apellido). Ninguna de las dos variables se puede modificar.
-Debemos lograr guardar en una tercer variable el apellido y el nombre con el siguiente formato:
+Debemos lograr guardar en una tercer variable el apellido y el descripcion con el siguiente formato:
 Por ejemplo:
 
-Si el nombre es juan ignacio y el apellido es gOmEz, la salida debería ser:
+Si el descripcion es juan ignacio y el apellido es gOmEz, la salida debería ser:
 Gomez, Juan Ignacio
 
 ============================================================================
@@ -26,7 +26,7 @@ Gomez, Juan Ignacio
 int main(void) {
 	setbuf(stdout, NULL);
 
-	char nombre[STR_LEN];
+	char descripcion[STR_LEN];
 	char apellido[STR_LEN];
 	char identificacion[2*STR_LEN];
 
@@ -38,7 +38,7 @@ int main(void) {
 
 
 	for (i=0;i<STR_LEN;i++){ // se inicializan vectores. prototipo strInit()
-		nombre[i]='\0';
+		descripcion[i]='\0';
 
 	}
 
@@ -58,15 +58,15 @@ int main(void) {
 	fflush(stdin);
 	scanf("%[^\n]", apellido);
 
-	printf("\ningrese su nombre: ");
+	printf("\ningrese su descripcion: ");
 	fflush(stdin);
-	scanf("%[^\n]", nombre);
+	scanf("%[^\n]", descripcion);
 
 
 	strlwr(apellido);
-	strlwr(nombre);
+	strlwr(descripcion);
 
-	printf("\nsu apellido: %s\nsu nombre: %s\n", apellido, nombre);
+	printf("\nsu apellido: %s\nsu descripcion: %s\n", apellido, descripcion);
 
 	/*
 	 * deteccion y correccion de caracteres indeseados al inicio del string. prototipo para strCleanLeft()
@@ -89,12 +89,12 @@ int main(void) {
 	}
 
 
-	//para nombre
+	//para descripcion
 
 	len=STR_LEN;
 	contador=0;
 	for(i=0;i<len;i++){
-		if (nombre[i]<'a' || nombre[i]>'z'){
+		if (descripcion[i]<'a' || descripcion[i]>'z'){
 			contador++;
 		}
 		else{
@@ -104,13 +104,13 @@ int main(void) {
 
 
 	for (i=0;i<len+1-contador;i++){
-		nombre[i]=nombre[i+contador];
+		descripcion[i]=descripcion[i+contador];
 	}
 
 
 
 	/*
-	 * correccion y deteccion de caracteres indeseados(excepto el espacio) en el medio del nombre. prototipo para strCleanMid()
+	 * correccion y deteccion de caracteres indeseados(excepto el espacio) en el medio del descripcion. prototipo para strCleanMid()
 	 */
 
 
@@ -132,16 +132,16 @@ int main(void) {
 	}
 
 
-	//para nombre
-	len=strlen(nombre);
+	//para descripcion
+	len=strlen(descripcion);
 	contador=0;
 	j=-1;
-	for(i=0; i+1<len && nombre[i]!='\0' ;i++){
+	for(i=0; i+1<len && descripcion[i]!='\0' ;i++){
 
-		if ( !(nombre[i]>='a' && nombre[i]<='z') && nombre[i]!=' ' ){
+		if ( !(descripcion[i]>='a' && descripcion[i]<='z') && descripcion[i]!=' ' ){
 
 			for(j=0; i+j<len; j++){
-				nombre[i+j]=nombre[i+j+1];
+				descripcion[i+j]=descripcion[i+j+1];
 			}
 			--i;
 
@@ -153,20 +153,20 @@ int main(void) {
 
 
 	apellido[0] = toupper( apellido[0] );
-	nombre[0] = toupper( nombre[0] );
+	descripcion[0] = toupper( descripcion[0] );
 
 
 	/*
 	 * deteccion de espacios extras. prototipo strSpcNot()
 	 */
 
-	for(i=0; i<STR_LEN && nombre[i]!='\0'; i++){
+	for(i=0; i<STR_LEN && descripcion[i]!='\0'; i++){
 
-		if( nombre[i]==' ' && nombre[i+1]==' ' ){
+		if( descripcion[i]==' ' && descripcion[i+1]==' ' ){
 
 			for(j=0; i+j<len; j++){
 
-				nombre[i+j]=nombre[i+j+1];
+				descripcion[i+j]=descripcion[i+j+1];
 			}
 			i--;
 
@@ -187,7 +187,7 @@ int main(void) {
 	}
 
 	/*
-	 * seteo de mayusculas a conveniencia. prototipo segundoNombre()
+	 * seteo de mayusculas a conveniencia. prototipo segundodescripcion()
 	 */
 
 	for (i=0; i<STR_LEN && apellido[i]!='\0'; i++){
@@ -197,10 +197,10 @@ int main(void) {
 		}
 	}
 
-	for (i=0; i<STR_LEN && nombre[i]!='\0'; i++){
-		if (nombre[i]==' '){
+	for (i=0; i<STR_LEN && descripcion[i]!='\0'; i++){
+		if (descripcion[i]==' '){
 			i++;
-			nombre[i]=toupper(nombre[i]);
+			descripcion[i]=toupper(descripcion[i]);
 		}
 	}
 
@@ -209,7 +209,7 @@ int main(void) {
 
 	strcat(identificacion, ", ");
 
-	strcat(identificacion, nombre);
+	strcat(identificacion, descripcion);
 
 	printf("\nsu identificacion es: %s", identificacion);
 

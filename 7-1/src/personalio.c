@@ -116,6 +116,23 @@ float basicMath(float a, float b, char operacion){
 return 1;
 }
 
+int isPair(int num){
+
+	int retorno;
+
+	if(num%2==0){
+		retorno=1;
+	}
+	else{
+		retorno=0;
+	}
+
+	return retorno;
+
+}
+
+
+
 void stringScan(char string[], int longitud, char *mensaje){
 
 	char aux[10*longitud];
@@ -128,10 +145,10 @@ void stringScan(char string[], int longitud, char *mensaje){
 		fflush(stdin);
 		scanf("%[^\n]", aux);
 
-		if ( strlen(aux)>longitud )
+		if ( strlen(aux)>longitud-1 )
 		{
 			flag=1;
-			printf("\nexcedio la cantidad de caracteres permitidos");
+			printf("excedio la cantidad de caracteres permitidos_ ");
 		}
 		else
 		{
@@ -164,15 +181,6 @@ int floatScan(char *mensaje){
 
 }
 
-void introContinue(char *mensaje){
-
-	printf("%s", mensaje);
-	fflush(stdin);
-	getchar();
-
-}
-
-
 void vecIntScan(int vector[], int size){
 
 	int i;
@@ -181,6 +189,28 @@ void vecIntScan(int vector[], int size){
 		printf("\nposicion %d) ", i);
 		vector[i]=intScan("ingrese valor: ");
 	}
+
+}
+
+int menu( char opciones[]  ){
+	int opcion;
+
+	printf( opciones );
+
+	printf("\nOpcion: ");
+	fflush(stdin);
+	scanf("%d", &opcion);
+
+	return opcion;
+}
+
+
+
+void introContinue(char *mensaje){
+
+	printf("%s", mensaje);
+	fflush(stdin);
+	getchar();
 
 }
 
@@ -211,20 +241,6 @@ void vecIntShow(int vector[],int start, int finish){
 	}
 }
 
-int isPair(int num){
-
-	int retorno;
-
-	if(num%2==0){
-		retorno=1;
-	}
-	else{
-		retorno=0;
-	}
-
-	return retorno;
-
-}
 
 void vecIntSort(int vector[], int len, int dir){
 	int i, j, aux;
