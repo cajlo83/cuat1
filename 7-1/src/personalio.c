@@ -171,7 +171,7 @@ int intScan(char *mensaje){
 
 }
 
-int floatScan(char *mensaje){
+float floatScan(char *mensaje){
 
 	float a;
 	printf("%s", mensaje);
