@@ -268,6 +268,7 @@ void modificarUnProducto(eProducto producto[], int indice){
 				break;
 			case 3:
 				printf("Saliendo de modificar...");
+				break;
 			default:
 				printf("La opcion ingresada es incorrecta..");
 

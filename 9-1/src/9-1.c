@@ -4,7 +4,7 @@
  Author      : Carlo Morici
  Version     :
  Copyright   : Your copyright notice
- Description : Ejercicio 7-1:
+ Description : Ejercicio 9-1:
 Una empresa importadora que comercializa productos Apple, decide registrar de sus productos los
 siguientes datos:
 -idProducto (numerico)
@@ -24,6 +24,18 @@ o el tipo.
 l) LISTADO Productos.
 m) LISTADO ordenado por precio.
 n) LISTADO ordenado por descripción.
+
+
+
+
+Agregar los siguientes informes:
+13. El/los productos más caros.
+14. Los productos que cuestan 700
+15. Precio promedio por tipo de producto.
+16. De los Iphone el más barato
+17. Los productos "MADE IN CHINA"
+18. Las MAC que cuestan más de 700 USD
+19. El/Los Accesorios más caros
  ============================================================================
  */
 
@@ -34,7 +46,7 @@ n) LISTADO ordenado por descripción.
 #include "personalio.h"
 #include "personalstruct.h"
 
-#define CANT 3
+#define PRODUCTOS 10
 
 
 
@@ -44,13 +56,13 @@ int hardCode( eProducto productos[], int contadorDatos );
 int main(void){
 	setbuf(stdout, NULL);
 
-	eProducto productos[CANT];
+	eProducto productos[PRODUCTOS];
 	int i, indice;
 	int contadorDatos=0;
 	int opcion, subOpcion;
 
 	//se inicializan los estados
-	for( i=0; i<CANT; i++ ){
+	for( i=0; i<PRODUCTOS; i++ ){
 		productos[i].estado = 0;
 	}
 
@@ -59,20 +71,20 @@ int main(void){
 
 	do{
 
-		opcion = menu( "\n\nMENU\n1. Alta\n2. Baja\n3. Modificar\n4. Listar\n5. HardCode (2 productos cargados)\n\n6. Salir" );
+		opcion = menu( "\n\nMENU\n1. Alta\n2. Baja\n3. Modificar\n4. Listar\n5. Informar\n6. HardCode (2 productos cargados)\n\n7. Salir" );
 
 		switch( opcion ){
 			////////////////////////////////////////////////////////////////////Alta
 			case 1:
 
 
-				 indice=buscaEstado(productos, CANT, 0);
+				 indice=buscaEstadoProductos(productos, PRODUCTOS, 0);
 
 				 if( indice==-1 ){
 					 printf("No hay espacio disponible...");
 				 }
 				 else{
-					 productos[indice] = alta();
+					 productos[indice] = altaProducto();
 					 productos[indice].idProducto=indice+1;
 
 					 contadorDatos++;
@@ -87,7 +99,7 @@ int main(void){
 				////////////////////////////////////////////////////////////////////Baja
 			case 2:
 
-				contadorDatos-= bajaID(productos, CANT);
+				contadorDatos-= bajaProductoID(productos, PRODUCTOS);
 
 				break;
 
@@ -100,7 +112,7 @@ int main(void){
 			case 3:
 				if( contadorDatos > 0 ){
 
-					indice=buscaID(productos, CANT, "\nIntroduzca el ID que desea modificar_ ");
+					indice=buscaProductoID(productos, PRODUCTOS, "\nIntroduzca el ID que desea modificar_ ");
 					if ( indice==-1 || productos[indice].estado==-1 ){
 						printf("\nEl ID ingresado no existe");
 
@@ -139,19 +151,19 @@ int main(void){
 
 						//listado simple
 						case 1:
-							MostrarVariasEstructuras( productos, CANT);
+							mostrarVariosProductos( productos, PRODUCTOS);
 							break;
 
 						//listado por precio
 						case 2:
 
-							MostrarVariasEstructurasPrecio( productos, CANT);
+							mostrarVariosProductosPrecio( productos, PRODUCTOS);
 							break;
 
 						//listado por descripcion
 						case 3:
 
-							MostrarVariasEstructurasDescripcion( productos, CANT);
+							mostrarVariosProductosDescripcion( productos, PRODUCTOS);
 							break;
 
 						case 4:
@@ -177,16 +189,97 @@ int main(void){
 
 
 
-				/////////////////////////////// HARDCODE
+				/////////////////////////////// INFORME
 
 			case 5:
+				if( contadorDatos > 0 ){
+
+/*
+ *
+13. El/los productos más caros.
+14. Los productos que cuestan 700
+15. Precio promedio por tipo de producto.
+16. De los Iphone el más barato
+17. Los productos "MADE IN CHINA"
+18. Las MAC que cuestan más de 700 USD
+19. El/Los Accesorios más caros
+
+ *
+ */
+									do
+									{
+										subOpcion = menu( "\n\nelija que informe desea ver:\n1. El/los productos más caros. (top 3)\n2. Los productos que cuestan 700.\n3. Precio promedio por tipo de producto.\n4. De los Iphone el más barato.\n5. Los productos \"MADE IN CHINA\"\n6. Las MAC que cuestan más de 700 USD\n7. El/Los Accesorios más caros (top 3)\n8. Salir" );
+
+										switch( subOpcion )
+										{
+
+										//El/los productos más caros.
+										case 1:
+											productosMasCaros( productos, PRODUCTOS, 3);
+											break;
+
+										//Los productos que cuestan 700
+										case 2:
+											 productoAlPrecio( productos, PRODUCTOS, 700);
+											break;
+
+										//Precio promedio por tipo de producto
+										case 3:
+											precioPromedioPorTipoProducto(productos, PRODUCTOS);
+											break;
+
+										//De los Iphone el más barato
+										case 4:
+											iphoneMasBarato(productos, PRODUCTOS);
+											break;
+
+										//Los productos "MADE IN CHINA"
+										case 5:
+											productosChinos(productos, PRODUCTOS);
+											break;
+
+										//Las MAC que cuestan más de 700 USD
+										case 6:
+											productoCaroMAC(productos, PRODUCTOS);
+											break;
+
+										//El/Los Accesorios más caros
+										case 7:
+											productosMasCarosTipo( productos, PRODUCTOS, 3, ACCESORIO);
+											break;
+
+										case 8:
+											printf("\nha salido del menu de lista");
+											break;
+
+
+										default:
+											printf("\nLa opcion ingresada es incorrecta..");
+
+
+										}
+
+									}while( subOpcion!=8 );
+
+
+
+								}
+								else{
+									printf("No hay datos cargados...");
+								}
+								break;
+
+
+				/////////////////////////////// HARDCODE
+
+			case 6:
 
 				contadorDatos= hardCode(productos, contadorDatos);
 				break;
 
 
 				//////////////////////// SALIDA
-			case 6:
+			case 7:
 				printf("\n\n\nSALUDOS");
 				break;
 
@@ -197,7 +290,7 @@ int main(void){
 		}
 
 
-	}while( opcion != 6 );
+	}while( opcion != 7 );
 
 
 }
@@ -220,9 +313,39 @@ int hardCode( eProducto productos[], int contadorDatos ){
 	strcpy(productos[1].descripcion, "descripcion 2");
 	productos[1].precio=1;
 	productos[1].nacionalidad=2;
-	productos[1].tipo=2;
+	productos[1].tipo=ACCESORIO;
 
 	productos[1].estado=1;
+	contadorDatos++;
+
+
+	productos[2].idProducto=3;
+	strcpy(productos[2].descripcion, "descripcion 3");
+	productos[2].precio=700;
+	productos[2].nacionalidad=3;
+	productos[2].tipo=2;
+
+	productos[2].estado=1;
+	contadorDatos++;
+
+
+	productos[3].idProducto=4;
+	strcpy(productos[3].descripcion, "descripcion 4");
+	productos[3].precio=700.5;
+	productos[3].nacionalidad=3;
+	productos[3].tipo=MAC;
+
+	productos[3].estado=1;
+	contadorDatos++;
+
+
+	productos[4].idProducto=5;
+	strcpy(productos[4].descripcion, "descripcion 5");
+	productos[4].precio=700.5;
+	productos[4].nacionalidad=CHINA;
+	productos[4].tipo=IPAD;
+
+	productos[4].estado=1;
 	contadorDatos++;
 
 	return contadorDatos;
