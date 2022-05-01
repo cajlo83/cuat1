@@ -8,16 +8,16 @@
 #ifndef PERSONALSTRUCT_H_
 #define PERSONALSTRUCT_H_
 
-#define PERSONAL_STRUCT_DESCRIPCION 150
+#define PERSONAL_STRUCT_DESCRIPCION 360
 
 #define EEUU 1
 #define CHINA 2
 #define OTRO 3
 
-#define IPHONE 1
-#define MAC 2
-#define IPAD 3
-#define ACCESORIO 4
+#define IPHONE 1000
+#define IPAD 1001
+#define MAC 1002
+#define ACCESORIO 1003
 
 typedef struct{
 	int idProducto;
@@ -30,6 +30,9 @@ typedef struct{
 
 
 eProducto altaProducto(void);
+
+void inicializaEstadoeProducto(eProducto arreglo[], int longitud);
+
 void mostrarUnProducto(eProducto unProducto);
 void mostrarVariosProductos(eProducto arregloDeEstructuras[], int longitud);
 void mostrarVariosProductosPrecio(eProducto arregloDeEstructuras[], int longitud);

@@ -6,16 +6,16 @@
  */
 
 
-#define PERSONAL_STRUCT_DESCRIPCION 150
+#define PERSONAL_STRUCT_DESCRIPCION 360
 
 #define EEUU 1
 #define CHINA 2
 #define OTRO 3
 
-#define IPHONE 1
-#define MAC 2
-#define IPAD 3
-#define ACCESORIO 4
+#define IPHONE 1000
+#define IPAD 1001
+#define MAC 1002
+#define ACCESORIO 1003
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,7 +34,39 @@ typedef struct{
 }eProducto;
 
 
+void inicializaEstadoeProducto(eProducto arreglo[], int longitud){
 
+	int i;
+
+	for( i=0; i<longitud; i++ ){
+		arreglo[i].estado = 0;
+	}
+
+
+
+}
+
+
+eProducto altaProducto(void){
+
+	eProducto ticket;
+
+	//ticket.idProducto=intScan("idProducto: ");
+
+	stringScan( ticket.descripcion, PERSONAL_STRUCT_DESCRIPCION, "descripcion: ");
+
+	ticket.precio= floatScan("precio: ");
+
+	ticket.nacionalidad=intScan("nacionalidad: 1: EEUU | 2: CHINA | 3: OTRO");
+
+	printf("tipo: %d: IPHONE | %d: IPAD | %d: MAC | %d: ACCESORIO\n", IPHONE , IPAD , MAC , ACCESORIO );
+	ticket.tipo= intScan("");
+
+	ticket.estado = 1;
+
+	return ticket;
+
+}
 
 void mostrarUnProducto(eProducto unProducto){
 
@@ -99,19 +131,21 @@ void mostrarVariosProductos(eProducto arregloDeEstructuras[], int longitud){
 void mostrarVariosProductosPrecio(eProducto arregloDeEstructuras[], int longitud){
 
 	int i, j;
-	eProducto eAux, productos[longitud];
+	eProducto eAux;
 
-
-
+	//se crea un clon de la estructura original para que la original no se desordene por los parametros de referencia
+	eProducto productos[longitud];
 	for (i=0;i<longitud;i++)
 	{
 		productos[i]=arregloDeEstructuras[i];
 	}
 
+
 	for( i=0; i<longitud; i++ )
 	{
 		for(j=i+1;j<longitud;j++)
 		{
+			//reorganiza el clon segun el valor guardado en *.precio
 			if( productos[i].precio>=productos[j].precio )
 			{
 				eAux=productos[i];
@@ -163,20 +197,28 @@ void productosMasCaros(eProducto arregloDeEstructuras[], int longitud, int top){
 
 	int i, j;
 	int contador=0;
-	eProducto eAux, productos[longitud];
+
+	eProducto eAux;
 
 
-
+	//se crea un clon de la estructura original para que la original no se desordene por los parametros de referencia
+	eProducto productos[longitud];
 	for (i=0;i<longitud;i++)
 	{
 		productos[i]=arregloDeEstructuras[i];
 	}
 
-	for( i=0; i<longitud; i++ )
+
+
+
+	//este bucle dependera de los valores de i y del contador de impresiones
+	for( i=0; i<longitud && contador<3 ; i++ )
 	{
-		for(j=i+1;j<longitud && contador<top ;j++)
+		for(j=i+1;j<longitud ;j++)
 		{
-			if( productos[i].precio<=productos[j].precio && productos[j].estado==1 )
+
+			//reorganiza el clon segun el valor guardado en *.precio
+			if( productos[i].precio<=productos[j].precio )
 			{
 				eAux=productos[i];
 				productos[i]=productos[j];
@@ -186,9 +228,16 @@ void productosMasCaros(eProducto arregloDeEstructuras[], int longitud, int top){
 
 		}
 
+		//si valor movido esta en alta se imprime y se aumenta el contador
+		if( productos[i].estado==1 )
+		{
+			mostrarUnProducto(productos[i]);
+			contador++;
+		}
+
 	}
 
-	mostrarVariosProductos( productos, top);
+
 
 
 }
@@ -412,25 +461,6 @@ void productoCaroMAC(eProducto arregloDeEstructuras[], int longitud){
 }
 
 
-eProducto altaProducto(void){
-
-	eProducto ticket;
-
-	//ticket.idProducto=intScan("idProducto: ");
-
-	stringScan( ticket.descripcion, PERSONAL_STRUCT_DESCRIPCION, "descripcion: ");
-
-	ticket.precio= floatScan("precio: ");
-
-	ticket.nacionalidad=intScan("nacionalidad: 1: EEUU | 2: CHINA | 3: OTRO");
-
-	ticket.tipo= intScan("tipo: 1: IPHONE | 2: MAC | 3: IPAD | 4: ACCESORIO");
-
-	ticket.estado = 1;
-
-	return ticket;
-
-}
 
 int buscaEstadoProductos(eProducto estructura[], int longitud, int estadoBuscado){
 
@@ -503,7 +533,7 @@ void modificarUnProducto(eProducto producto[], int indice){
 		printf("\nque desea modificar?");
 
 
-		opcion = menu( "\n\nMENU\n1. precio\n2. tipo\n3. Salir" );
+		opcion = intScan( "\n\nMENU\n1. precio\n2. tipo\n3. Salir" );
 
 
 		switch( opcion ){

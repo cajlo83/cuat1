@@ -135,7 +135,7 @@ int isPair(int num){
 
 void stringScan(char string[], int longitud, char *mensaje){
 
-	char aux[10*longitud];
+	char aux[1024];
 	int flag;
 
 	printf("%s", mensaje);
@@ -292,6 +292,16 @@ void cleanIntArray(int vector[], int len){
 
 	for(i=0;i<len;i++){
 		vector[i]=0;
+	}
+
+}
+
+void cleanCharArray(char vector[], int len){
+
+	int i;
+
+	for(i=0;i<len;i++){
+		vector[i]='\n';
 	}
 
 }

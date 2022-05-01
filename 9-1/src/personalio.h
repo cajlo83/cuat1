@@ -121,6 +121,8 @@ void repetidosVectorEntero(int vector[], int len);
  */
 void cleanIntArray(int vector[], int len);
 
+void cleanCharArray(char vector[], int len);
+
 /**
  * @brief retorna un entero random en un intervalo dado (inclusive).
  * recordar combinar con {#include <time.h>} y {srand(time(NULL));}

@@ -121,6 +121,8 @@ void repetidosVectorEntero(int vector[], int len);
  */
 void cleanIntArray(int vector[], int len);
 
+void cleanCharArray(char vector[], int len);
+
 /**
  * @brief retorna un entero random en un intervalo dado (inclusive).
  * recordar combinar con {#include <time.h>} y {srand(time(NULL));}
@@ -131,14 +133,14 @@ void cleanIntArray(int vector[], int len);
  * @return random controlado
  */
 int randomInt(int minimo, int maximo);
-
-/**
- * @brief despliega una lista enumerada de opciones y retorna la opcion seleccionada
- *
- * @param opciones mensaje con lista de opciones
- * @return valor tipo entero
- */
-int menu( char opciones[]  );
-
+//
+///**
+// * @brief despliega una lista enumerada de opciones y retorna la opcion seleccionada
+// *
+// * @param opciones mensaje con lista de opciones
+// * @return valor tipo entero
+// */
+//int menu( char opciones[]  );
+//
 
 #endif /* PERSONALIO_H_ */
