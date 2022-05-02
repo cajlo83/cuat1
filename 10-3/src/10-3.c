@@ -91,9 +91,10 @@ int main(void){
 	setbuf(stdout, NULL);
 
 	eProducto productos[PRODUCTOS];
-	//eTipoProducto tiposProductos[TIPOS];
 
-//	int i;
+	//inicializo y completo la estructura de tipos de productos
+	eTipoProducto tiposProductos[TIPOS] = { {IPHONE,"IPHONE"}, {IPAD,"IPAD"}, {MAC, "MAC"}, {ACCESORIO, "ACCESORIO"} };
+
 	int indice;
 	int contadorDatos=0;
 	int opcion, subOpcion;
@@ -101,12 +102,6 @@ int main(void){
 	//se inicializan los estados del arreglo de productos
 
 	inicializaEstadoeProducto(productos, PRODUCTOS);
-//
-//	for( i=0; i<PRODUCTOS; i++ ){
-//		productos[i].estado = 0;
-//	}
-//
-
 
 
 	do{
@@ -122,7 +117,7 @@ int main(void){
 					 printf("No hay espacio disponible...");
 				 }
 				 else{
-					 productos[indice] = altaProducto();
+					 productos[indice] = altaProducto(tiposProductos, TIPOS);
 					 productos[indice].idProducto=indice+1;
 
 					 contadorDatos++;
@@ -181,7 +176,7 @@ int main(void){
 
 					do
 					{
-						subOpcion = intScan( "\n\n\telija que listado desea ver:\n1. LISTADO Productos.\n2. LISTADO ordenado por precio.\n3. LISTADO ordenado por descripción.\n4. Salir\nElija donde desea ingresar " );
+						subOpcion = intScan( "\n\n\tElija que listado desea ver:\n1. LISTADO Productos.\n2. LISTADO ordenado por precio.\n3. LISTADO ordenado por descripción.\n4. El listado de todos los productos con la descripción del tipo.\n5. Por cada tipo la lista de productos\n\n6.Salir\nElija donde desea ingresar " );
 
 						switch( subOpcion )
 						{
@@ -200,8 +195,23 @@ int main(void){
 						case 3:
 							mostrarVariosProductosDescripcion( productos, PRODUCTOS);
 							break;
+/*
 
+ Se agregan los siguientes listados:
+16. El listado de todos los productos con la descripción del tipo.
+17. Por cada tipo la lista de productos.
+
+ *
+ */
 						case 4:
+							mostrarVariosProductosDetallado( productos, PRODUCTOS, tiposProductos, TIPOS);
+							break;
+
+						case 5:
+							mostrarVariosProductosTipo( productos, PRODUCTOS, tiposProductos, TIPOS);
+							break;
+
+						case 6:
 							printf("\nha salido del menu de lista");
 							break;
 
@@ -212,7 +222,7 @@ int main(void){
 
 						}
 
-					}while( subOpcion!=4 );
+					}while( subOpcion!=6 );
 
 
 
@@ -224,7 +234,7 @@ int main(void){
 
 
 
-				/////////////////////////////// INFORME
+				/////////////////////////////// INFORMAR
 
 			case 5:
 				if( contadorDatos > 0 )
@@ -247,8 +257,9 @@ int main(void){
 							break;
 
 						//Precio promedio por tipo de producto
+						//	+ Se deberá mostrar la descripción del tipo y a continuación el precio promedio
 						case 3:
-							precioPromedioPorTipoProducto(productos, PRODUCTOS);
+							precioPromedioPorTipoProducto(productos, PRODUCTOS, tiposProductos, TIPOS);
 							break;
 
 						//De los Iphone el más barato

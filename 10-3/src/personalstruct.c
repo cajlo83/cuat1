@@ -34,6 +34,13 @@ typedef struct{
 }eProducto;
 
 
+typedef struct{
+	int idTipo;
+	char descripcionTipo[PERSONAL_STRUCT_DESCRIPCION];
+}eTipoProducto;
+
+
+
 void inicializaEstadoeProducto(eProducto arreglo[], int longitud){
 
 	int i;
@@ -46,8 +53,100 @@ void inicializaEstadoeProducto(eProducto arreglo[], int longitud){
 
 }
 
+//mostrar la informacion de un tipo de producto segun la posicion en el arreglo
+void mostrarTipoProductoPosicion(eTipoProducto arregloTipoProducto[], int lonTipo, int posicion ){
 
-eProducto altaProducto(void){
+	//se verifica que la posicion este dentro de los limites del arreglo
+	if (posicion<lonTipo)
+	{
+		printf("\ncodigo: %d\ttipo de producto: %s ", arregloTipoProducto[posicion].idTipo , arregloTipoProducto[posicion].descripcionTipo );
+	}
+	else
+	{
+		printf("\nla posicion sugerida excede el tamaño del arreglo");
+	}
+}
+
+
+//mostrar la informacion de los tipos de productos disponibles
+void mostrarTiposProductos(eTipoProducto arregloTipoProducto[], int lonTipo ){
+
+	int i;
+
+	printf("\n");
+	for( i=0; i<lonTipo;i++)
+	{
+		mostrarTipoProductoPosicion( arregloTipoProducto,  lonTipo,  i );
+	}
+
+}
+
+
+//mostrar la informacion de un tipo de producto segun su codigo ID
+void mostrarTipoProductoID(eTipoProducto arregloTipoProducto[], int lonTipo, int id){
+
+	int i;
+	int posicion=-1;
+
+	//valida que el ID recibido sea valido y sino lo avisa
+	for( i=0; i<lonTipo;i++)
+	{
+		if ( arregloTipoProducto[i].idTipo== id )
+		{
+			posicion=i;
+			break;
+
+		}
+	}
+
+	if( posicion==-1 )
+	{
+		printf("\nno se encontro el ID solicitado");
+	}
+	else
+	{
+		mostrarTipoProductoPosicion( arregloTipoProducto,  lonTipo, posicion );
+
+	}
+
+}
+
+
+int eligeTipoProducto(eTipoProducto arregloTipoProducto[], int lonTipo ){
+
+	int i;
+	int aux;
+	int retornador=-1;
+
+	do
+	{
+
+		//mostrar la informacion de los tipos de productos disponibles
+		printf("\n");
+		mostrarTiposProductos( arregloTipoProducto, lonTipo );
+
+		//solicitar que elija una opcion
+		aux= intScan("\nseleccionar el codigo del tipo de producto");
+
+
+		for( i=0; i<lonTipo ;i++)
+		{
+			//verificar que la opcion es valida dependiendo si coincide con uno de los idTipo cargados
+			//si se encuentra que coincide con un valor valido, se guarda y se sale del bucle
+			if( aux==arregloTipoProducto[i].idTipo )
+			{
+				retornador= arregloTipoProducto[i].idTipo;
+				break;
+			}
+		}
+
+	}while( retornador==-1 );
+
+	return retornador;
+}
+
+
+eProducto altaProducto(eTipoProducto arregloTipoProducto[], int lonTipo ){
 
 	eProducto ticket;
 
@@ -59,8 +158,8 @@ eProducto altaProducto(void){
 
 	ticket.nacionalidad=intScan("nacionalidad: 1: EEUU | 2: CHINA | 3: OTRO");
 
-	printf("tipo: %d: IPHONE | %d: IPAD | %d: MAC | %d: ACCESORIO\n", IPHONE , IPAD , MAC , ACCESORIO );
-	ticket.tipo= intScan("");
+
+	ticket.tipo= eligeTipoProducto(arregloTipoProducto, lonTipo );
 
 	ticket.estado = 1;
 
@@ -71,7 +170,7 @@ eProducto altaProducto(void){
 void mostrarUnProducto(eProducto unProducto){
 
 	char strNac[6];
-	char strTipo[12];
+//	char strTipo[12];
 
 	printf("\nidProducto: %d \tdescripcion: %s \tprecio: %.2f", unProducto.idProducto, unProducto.descripcion, unProducto.precio);
 
@@ -91,44 +190,89 @@ void mostrarUnProducto(eProducto unProducto){
 
 	}
 
-	switch( unProducto.tipo )
-	{
-	case IPHONE:
-		strcpy(strTipo, "IPHONE");
-		break;
 
-	case MAC:
-		strcpy(strTipo, "MAC");
-		break;
-
-	case IPAD:
-		strcpy(strTipo, "IPAD");
-		break;
-
-	case ACCESORIO:
-		strcpy(strTipo, "ACCESORIO");
-
-	}
-
-
-	printf("\tnacionalidad: %s \ttipo: %s", strNac, strTipo);
+	printf("\tnacionalidad: %s \ttipo: %d", strNac, unProducto.tipo);
 
 
 }
 
-void mostrarVariosProductos(eProducto arregloDeEstructuras[], int longitud){
+void mostrarVariosProductosDetallado( eProducto arregloDeProductos[], int longitud, eTipoProducto arregloTipoProducto[], int lonTipo){
 
 	int i;
 
 	for( i=0; i<longitud; i++ ){
-		if( arregloDeEstructuras[i].estado == 1 ){
-			mostrarUnProducto( arregloDeEstructuras[i] );
+		if( arregloDeProductos[i].estado == 1 ){
+			mostrarUnProducto( arregloDeProductos[i] );
+			mostrarTipoProductoPosicion(arregloTipoProducto, lonTipo, i);
 		}
 	}
 
 }
 
-void mostrarVariosProductosPrecio(eProducto arregloDeEstructuras[], int longitud){
+void mostrarVariosProductosTipo( eProducto arregloDeProductos[], int longitud, eTipoProducto arregloTipoProducto[], int lonTipo){
+
+	int i, j;
+	int flag=-1;
+	eProducto eAux;
+
+	//se crea un clon de la estructura original para que la original no se desordene por los parametros de referencia
+	eProducto productos[longitud];
+	for (i=0;i<longitud;i++)
+	{
+		productos[i]=arregloDeProductos[i];
+	}
+
+
+	for( i=0; i<longitud; i++ )
+	{
+		for(j=i+1;j<longitud;j++)
+		{
+			//reorganiza el clon segun el valor guardado en *.tipo
+			if( productos[i].tipo>=productos[j].tipo )
+			{
+				eAux=productos[i];
+				productos[i]=productos[j];
+				productos[j]=eAux;
+
+
+			}
+		}
+
+		if ( productos[i].estado==1 )
+		{
+
+			//bandera que determina si hace hace falta aclarar el tipo del listado siguiente
+			if( flag!=productos[i].tipo )
+			{
+				flag=productos[i].tipo;
+
+				printf("\n");
+				mostrarTipoProductoID(arregloTipoProducto, lonTipo, productos[i].tipo);
+				printf("\tlistado correspondiente:");
+
+			}
+
+			mostrarUnProducto(productos[i]);
+		}
+
+	}
+
+}
+
+
+void mostrarVariosProductos(eProducto arregloDeProductos[], int longitud){
+
+	int i;
+
+	for( i=0; i<longitud; i++ ){
+		if( arregloDeProductos[i].estado == 1 ){
+			mostrarUnProducto( arregloDeProductos[i] );
+		}
+	}
+
+}
+
+void mostrarVariosProductosPrecio(eProducto arregloDeProductos[], int longitud){
 
 	int i, j;
 	eProducto eAux;
@@ -137,7 +281,7 @@ void mostrarVariosProductosPrecio(eProducto arregloDeEstructuras[], int longitud
 	eProducto productos[longitud];
 	for (i=0;i<longitud;i++)
 	{
-		productos[i]=arregloDeEstructuras[i];
+		productos[i]=arregloDeProductos[i];
 	}
 
 
@@ -162,22 +306,24 @@ void mostrarVariosProductosPrecio(eProducto arregloDeEstructuras[], int longitud
 
 }
 
-void mostrarVariosProductosDescripcion(eProducto arregloDeEstructuras[], int longitud){
+void mostrarVariosProductosDescripcion(eProducto arregloDeProductos[], int longitud){
 
 	int i, j;
-	eProducto eAux, productos[longitud];
+	eProducto eAux;
 
-
-
+	//se crea un clon de la estructura original para que la original no se desordene por los parametros de referencia
+	eProducto productos[longitud];
 	for (i=0;i<longitud;i++)
 	{
-		productos[i]=arregloDeEstructuras[i];
+		productos[i]=arregloDeProductos[i];
 	}
+
 
 	for( i=0; i<longitud; i++ )
 	{
 		for(j=i+1;j<longitud;j++)
 		{
+			//reorganiza el clon segun el valor guardado en *.descripcion
 			if( strcmp(productos[i].descripcion, productos[j].descripcion)>0 )
 			{
 				eAux=productos[i];
@@ -193,7 +339,7 @@ void mostrarVariosProductosDescripcion(eProducto arregloDeEstructuras[], int lon
 
 }
 
-void productosMasCaros(eProducto arregloDeEstructuras[], int longitud, int top){
+void productosMasCaros(eProducto arregloDeProductos[], int longitud, int top){
 
 	int i, j;
 	int contador=0;
@@ -205,7 +351,7 @@ void productosMasCaros(eProducto arregloDeEstructuras[], int longitud, int top){
 	eProducto productos[longitud];
 	for (i=0;i<longitud;i++)
 	{
-		productos[i]=arregloDeEstructuras[i];
+		productos[i]=arregloDeProductos[i];
 	}
 
 
@@ -243,7 +389,7 @@ void productosMasCaros(eProducto arregloDeEstructuras[], int longitud, int top){
 }
 
 
-void productosMasCarosTipo(eProducto arregloDeEstructuras[], int longitud, int top, int tipo){
+void productosMasCarosTipo(eProducto arregloDeProductos[], int longitud, int top, int tipo){
 
 	int i, j;
 	int contador=0;
@@ -253,7 +399,7 @@ void productosMasCarosTipo(eProducto arregloDeEstructuras[], int longitud, int t
 
 	for (i=0;i<longitud;i++)
 	{
-		productos[i]=arregloDeEstructuras[i];
+		productos[i]=arregloDeProductos[i];
 	}
 
 	for( i=0; i<longitud && contador<top; i++ )
@@ -284,23 +430,25 @@ void productosMasCarosTipo(eProducto arregloDeEstructuras[], int longitud, int t
 }
 
 
-void productoAlPrecio(eProducto arregloDeEstructuras[], int longitud, float precio){
+void productoAlPrecio(eProducto arregloDeProductos[], int longitud, float precio){
 
 	int i;
 
 
 	for( i=0; i<longitud; i++ )
 	{
-		if( arregloDeEstructuras[i].precio == 700 && arregloDeEstructuras[i].estado==1 )
+		if( arregloDeProductos[i].precio == 700 && arregloDeProductos[i].estado==1 )
 		{
-			mostrarUnProducto( arregloDeEstructuras[i] );
+			mostrarUnProducto( arregloDeProductos[i] );
 		}
 	}
 
 
 }
 
-void precioPromedioPorTipoProducto(eProducto arregloDeEstructuras[], int longitud){
+
+
+void precioPromedioPorTipoProducto(eProducto arregloDeProductos[], int longitud, eTipoProducto arregloTipos[], int lonTipos){
 
 	int i;
 	float totalIPHONE=0, totalIPAD=0, totalMAC=0, totalACCESORIO=0;
@@ -310,38 +458,42 @@ void precioPromedioPorTipoProducto(eProducto arregloDeEstructuras[], int longitu
 
 	for( i=0; i<longitud; i++ )
 	{
-		if( arregloDeEstructuras[i].tipo == IPHONE && arregloDeEstructuras[i].estado==1 )
+		//se determina los datos a usar segun el tipo de producto y su estado
+		if( arregloDeProductos[i].tipo == IPHONE && arregloDeProductos[i].estado==1 )
 		{
-			totalIPHONE+= arregloDeEstructuras[i].precio;
+			totalIPHONE+= arregloDeProductos[i].precio;
 			cantIPHONE++;
 		}
 
-		if( arregloDeEstructuras[i].tipo == IPAD && arregloDeEstructuras[i].estado==1 )
+		if( arregloDeProductos[i].tipo == IPAD && arregloDeProductos[i].estado==1 )
 		{
-			totalIPAD+= arregloDeEstructuras[i].precio;
+			totalIPAD+= arregloDeProductos[i].precio;
 			cantIPAD++;
 		}
 
-		if( arregloDeEstructuras[i].tipo == MAC && arregloDeEstructuras[i].estado==1 )
+		if( arregloDeProductos[i].tipo == MAC && arregloDeProductos[i].estado==1 )
 		{
-			totalMAC+= arregloDeEstructuras[i].precio;
+			totalMAC+= arregloDeProductos[i].precio;
 			cantMAC++;
 		}
 
-		if( arregloDeEstructuras[i].tipo == ACCESORIO && arregloDeEstructuras[i].estado==1 )
+		if( arregloDeProductos[i].tipo == ACCESORIO && arregloDeProductos[i].estado==1 )
 		{
-			totalACCESORIO+= arregloDeEstructuras[i].precio;
+			totalACCESORIO+= arregloDeProductos[i].precio;
 			cantACCESORIO++;
 		}
 
 
 	}
 
+
+	//determina que los contadores no esten en 0 antes de desplegar la informacion
 	if( cantIPHONE>0 )
 	{
 		promedio= totalIPHONE/cantIPHONE;
 
-		printf("\nEl promedio de precio por IPHONE es: %.2f", promedio);
+		mostrarTipoProductoID(arregloTipos, lonTipos, IPHONE);
+		printf("\n\tPrecio promedio por IPHONE es: %.2f", promedio);
 	}
 	else
 	{
@@ -353,7 +505,9 @@ void precioPromedioPorTipoProducto(eProducto arregloDeEstructuras[], int longitu
 	{
 		promedio= totalIPAD/cantIPAD;
 
-		printf("\nEl promedio de precio por IPAD es: %.2f", promedio);
+		mostrarTipoProductoID(arregloTipos, lonTipos,  IPAD);
+
+		printf("\n\tPrecio promedio por IPAD es: %.2f", promedio);
 	}
 	else
 	{
@@ -365,7 +519,9 @@ void precioPromedioPorTipoProducto(eProducto arregloDeEstructuras[], int longitu
 	{
 		promedio= totalMAC/cantMAC;
 
-		printf("\nEl promedio de precio por MAC es: %.2f", promedio);
+		mostrarTipoProductoID(arregloTipos, lonTipos,  MAC);
+
+		printf("\n\tPrecio promedio por MAC es: %.2f", promedio);
 	}
 	else
 	{
@@ -377,7 +533,8 @@ void precioPromedioPorTipoProducto(eProducto arregloDeEstructuras[], int longitu
 	{
 		promedio= totalACCESORIO/cantACCESORIO;
 
-		printf("\nEl promedio de precio por ACCESORIO es: %.2f", promedio);
+		mostrarTipoProductoID(arregloTipos, lonTipos,  ACCESORIO);
+		printf("\n\tPrecio promedio por ACCESORIO es: %.2f", promedio);
 	}
 	else
 	{
@@ -389,7 +546,7 @@ void precioPromedioPorTipoProducto(eProducto arregloDeEstructuras[], int longitu
 
 }
 
-void iphoneMasBarato(eProducto arregloDeEstructuras[], int longitud){
+void iphoneMasBarato(eProducto arregloDeProductos[], int longitud){
 
 	int i, j;
 	eProducto eAux, productos[longitud];
@@ -398,7 +555,7 @@ void iphoneMasBarato(eProducto arregloDeEstructuras[], int longitud){
 
 	for (i=0;i<longitud;i++)
 	{
-		productos[i]=arregloDeEstructuras[i];
+		productos[i]=arregloDeProductos[i];
 	}
 
 	for( i=0; i<longitud; i++ )
@@ -426,15 +583,15 @@ void iphoneMasBarato(eProducto arregloDeEstructuras[], int longitud){
 }
 
 
-void productosChinos(eProducto arregloDeEstructuras[], int longitud){
+void productosChinos(eProducto arregloDeProductos[], int longitud){
 
 	int i;
 	for( i=0; i<longitud; i++ )
 	{
 
-		if ( arregloDeEstructuras[i].nacionalidad == CHINA && arregloDeEstructuras[i].estado==1 )
+		if ( arregloDeProductos[i].nacionalidad == CHINA && arregloDeProductos[i].estado==1 )
 		{
-			mostrarUnProducto(arregloDeEstructuras[i]);
+			mostrarUnProducto(arregloDeProductos[i]);
 		}
 	}
 
@@ -442,7 +599,7 @@ void productosChinos(eProducto arregloDeEstructuras[], int longitud){
 }
 
 
-void productoCaroMAC(eProducto arregloDeEstructuras[], int longitud){
+void productoCaroMAC(eProducto arregloDeProductos[], int longitud){
 
 	int i;
 
@@ -451,9 +608,9 @@ void productoCaroMAC(eProducto arregloDeEstructuras[], int longitud){
 	for( i=0; i<longitud; i++ )
 	{
 
-		if ( arregloDeEstructuras[i].tipo == MAC && arregloDeEstructuras[i].estado==1 && arregloDeEstructuras[i].precio>700 )
+		if ( arregloDeProductos[i].tipo == MAC && arregloDeProductos[i].estado==1 && arregloDeProductos[i].precio>700 )
 		{
-			mostrarUnProducto(arregloDeEstructuras[i]);
+			mostrarUnProducto(arregloDeProductos[i]);
 		}
 	}
 
@@ -523,7 +680,7 @@ int bajaProductoID(eProducto estructura[], int longitud){
 	return retorno;
 }
 
-void modificarUnProducto(eProducto producto[], int indice){
+void modificarUnProducto(eProducto producto[], int indice, eTipoProducto arregloTipoProducto[], int lonTipo ){
 
 	int opcion;
 
@@ -541,7 +698,10 @@ void modificarUnProducto(eProducto producto[], int indice){
 				producto[indice].precio= floatScan("\nindique nuevo precio: ");
 				break;
 			case 2:
-				producto[indice].tipo= intScan("\nindique nuevo tipo: 1: IPHONE | 2: MAC | 3: IPAD | 4: ACCESORIO");
+
+				//printf("tipo: %d: IPHONE | %d: IPAD | %d: MAC | %d: ACCESORIO\n", IPHONE , IPAD , MAC , ACCESORIO );
+
+				producto[indice].tipo= eligeTipoProducto( arregloTipoProducto,  lonTipo );// intScan("");
 				break;
 			case 3:
 				printf("Saliendo de modificar...");
