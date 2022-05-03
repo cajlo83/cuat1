@@ -35,6 +35,7 @@ Se agregan los siguientes listados:
 
 #define PRODUCTOS 10
 #define TIPOS 4
+#define NACIONALIDADES 3
 
 
 int hardCode( eProducto productos[], int contadorDatos );
@@ -47,6 +48,9 @@ int main(void){
 
 	//inicializo y completo la estructura de tipos de productos
 	eTipoProducto tiposProductos[TIPOS] = { {IPHONE,"IPHONE"}, {IPAD,"IPAD"}, {MAC, "MAC"}, {ACCESORIO, "ACCESORIO"} };
+
+	//inicializo y completo la estructura de nacionalida
+	eNacionalidad nacionalidades[NACIONALIDADES] = { {EEUU,"EEUU"}, {CHINA,"CHINA"}, {OTRO, "OTRO"} };
 
 	int indice;
 	int contadorDatos=0;
@@ -104,7 +108,8 @@ int main(void){
 					}
 					else{
 
-						modificarUnProducto(productos, indice);
+						modificarUnProducto( productos, indice, tiposProductos, TIPOS );
+//						modificarUnProducto(productos, indice);
 						break;
 					}
 
@@ -129,7 +134,8 @@ int main(void){
 
 					do
 					{
-						subOpcion = intScan( "\n\n\tElija que listado desea ver:\n1. LISTADO Productos.\n2. LISTADO ordenado por precio.\n3. LISTADO ordenado por descripción.\n4. El listado de todos los productos con la descripción del tipo.\n5. Por cada tipo la lista de productos\n\n6.Salir\nElija donde desea ingresar " );
+						printf("\n\n\tElija que listado desea ver:\n1. LISTADO Productos.\n2. LISTADO ordenado por precio.\n3. LISTADO ordenado por descripción.\n4. El listado de todos los productos con la descripción del tipo.\n5. Por cada tipo la lista de productos");
+						subOpcion = intScan( "\n6. El/los tipos de productos con mas productos importados.\n\n7.Salir\nElija donde desea ingresar " );
 
 						switch( subOpcion )
 						{
@@ -148,14 +154,6 @@ int main(void){
 						case 3:
 							mostrarVariosProductosDescripcion( productos, PRODUCTOS);
 							break;
-/*
-
- Se agregan los siguientes listados:
-16. El listado de todos los productos con la descripción del tipo.
-17. Por cada tipo la lista de productos.
-
- *
- */
 						case 4:
 							mostrarVariosProductosDetallado( productos, PRODUCTOS, tiposProductos, TIPOS);
 							break;
@@ -163,8 +161,18 @@ int main(void){
 						case 5:
 							mostrarVariosProductosTipo( productos, PRODUCTOS, tiposProductos, TIPOS);
 							break;
+/*
+ *
+Se agregan los siguientes listados:
+11. El/los tipos de productos con mas productos importados.
 
+ *
+ */
 						case 6:
+							mostrarVariosProductosTipoMasImportado( productos, PRODUCTOS, tiposProductos, TIPOS , nacionalidades, NACIONALIDADES );
+							break;
+
+						case 7:
 							printf("\nha salido del menu de lista");
 							break;
 
@@ -175,7 +183,7 @@ int main(void){
 
 						}
 
-					}while( subOpcion!=6 );
+					}while( subOpcion!=7 );
 
 
 
@@ -235,10 +243,18 @@ int main(void){
 							productosMasCarosTipo( productos, PRODUCTOS, 3, ACCESORIO);
 							break;
 
-
-
-
+/*
+ *
+12. La nacionalidad que solo fabrica Iphone.
+13. Los productos, ordenados por nacionalidad alfabéticamente.
+ *
+ */
 						case 8:
+							//nacionalidadApple()
+							break;
+
+
+						case 10:
 							printf("\nha salido del menu de INFORMES");
 							break;
 
@@ -249,7 +265,7 @@ int main(void){
 
 						}
 
-					}while( subOpcion!=8 );
+					}while( subOpcion!=10 );
 
 
 
@@ -329,11 +345,12 @@ int hardCode( eProducto productos[], int contadorDatos ){
 	contadorDatos++;
 
 
+	productos[4].estado=1;
 	productos[4].idProducto=5;
-	strcpy(productos[4].descripcion, "descripcion 5");
 	productos[4].precio=700.5;
 	productos[4].nacionalidad=CHINA;
 	productos[4].tipo=IPAD;
+	strcpy(productos[4].descripcion, "descripcion 5");
 
 	productos[4].estado=1;
 	contadorDatos++;

@@ -8,7 +8,7 @@
 #ifndef PERSONALSTRUCT_H_
 #define PERSONALSTRUCT_H_
 
-#define PERSONAL_STRUCT_DESCRIPCION 360
+#define PERSONAL_STRUCT_DESCRIPCION 36
 
 #define EEUU 1
 #define CHINA 2
@@ -19,6 +19,7 @@
 #define MAC 1002
 #define ACCESORIO 1003
 
+
 typedef struct{
 	int idProducto;
 	char descripcion[PERSONAL_STRUCT_DESCRIPCION];
@@ -28,11 +29,23 @@ typedef struct{
 	int estado;
 }eProducto;
 
-
 typedef struct{
 	int idTipo;
 	char descripcionTipo[PERSONAL_STRUCT_DESCRIPCION];
 }eTipoProducto;
+
+typedef struct{
+	int idNacionalidad;
+	char descripcionNacionalidad[PERSONAL_STRUCT_DESCRIPCION];
+}eNacionalidad;
+
+
+typedef struct{
+	int idTipo;
+	int idNacionalidad;
+}eTipoNacionalidad;
+
+
 
 eProducto altaProducto(eTipoProducto arregloTipoProducto[], int lonTipo );
 
@@ -54,11 +67,13 @@ void mostrarVariosProductosTipo( eProducto arregloDeProductos[], int longitud, e
 
 void mostrarVariosProductos(eProducto arregloDeEstructuras[], int longitud);
 
+void mostrarVariosProductosTipoMasImportado( eProducto arregloDeProductos[], int lonProductos, eTipoProducto arregloTipoProducto[], int lonTipo , eNacionalidad arregloNacionalidades[], int lonNacionalidad );
+
 void mostrarVariosProductosPrecio(eProducto arregloDeEstructuras[], int longitud);
 
 void mostrarVariosProductosDescripcion(eProducto arregloDeEstructuras[], int longitud);
 
-void modificarUnProducto(eProducto producto[], int indice);
+void modificarUnProducto(eProducto producto[], int indice, eTipoProducto arregloTipoProducto[], int lonTipo );
 
 int buscaEstadoProductos(eProducto estructura[], int longitud, int estadoBuscado);
 

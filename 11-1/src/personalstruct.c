@@ -6,38 +6,42 @@
  */
 
 
-#define PERSONAL_STRUCT_DESCRIPCION 360
 
-#define EEUU 1
-#define CHINA 2
-#define OTRO 3
-
-#define IPHONE 1000
-#define IPAD 1001
-#define MAC 1002
-#define ACCESORIO 1003
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
 #include "personalio.h"
+#include "personalstruct.h"
 
-
-typedef struct{
-	int idProducto;
-	char descripcion[PERSONAL_STRUCT_DESCRIPCION];
-	float precio;
-	int nacionalidad;
-	int tipo;
-	int estado;
-}eProducto;
-
-
-typedef struct{
-	int idTipo;
-	char descripcionTipo[PERSONAL_STRUCT_DESCRIPCION];
-}eTipoProducto;
+//
+//typedef struct{
+//	int idProducto;
+//	char descripcion[PERSONAL_STRUCT_DESCRIPCION];
+//	float precio;
+//	int nacionalidad;
+//	int tipo;
+//	int estado;
+//}eProducto;
+//
+//typedef struct{
+//	int idTipo;
+//	char descripcionTipo[PERSONAL_STRUCT_DESCRIPCION];
+//}eTipoProducto;
+//
+//typedef struct{
+//	int idNacionalidad;
+//	char descripcionNacionalidad[PERSONAL_STRUCT_DESCRIPCION];
+//}eNacionalidad;
+//
+//
+//typedef struct{
+//	int idTipo;
+//	int idNacionalidad;
+//}eTipoNacionalidad;
+//
+//
 
 
 ////////////////////// TIPOS
@@ -130,46 +134,6 @@ int eligeTipoProducto(eTipoProducto arregloTipoProducto[], int lonTipo ){
 	return retornador;
 }
 
-void productosMasCarosTipo(eProducto arregloDeProductos[], int longitud, int top, int tipo){
-
-	int i, j;
-	int contador=0;
-	eProducto eAux, productos[longitud];
-
-
-
-	for (i=0;i<longitud;i++)
-	{
-		productos[i]=arregloDeProductos[i];
-	}
-
-	for( i=0; i<longitud && contador<top; i++ )
-	{
-		for(j=i+1;j<longitud && contador<top ;j++)
-		{
-			if( productos[i].precio<=productos[j].precio && productos[j].estado==1 )
-			{
-				eAux=productos[i];
-				productos[i]=productos[j];
-				productos[j]=eAux;
-
-			}
-
-		}
-
-		if( productos[i].tipo== tipo )
-		{
-			contador++;
-			mostrarUnProducto(productos[i]);
-		}
-
-	}
-
-
-
-
-}
-
 
 
 
@@ -238,6 +202,48 @@ void mostrarUnProducto(eProducto unProducto){
 
 
 }
+
+
+void productosMasCarosTipo(eProducto arregloDeProductos[], int longitud, int top, int tipo){
+
+	int i, j;
+	int contador=0;
+	eProducto eAux, productos[longitud];
+
+
+
+	for (i=0;i<longitud;i++)
+	{
+		productos[i]=arregloDeProductos[i];
+	}
+
+	for( i=0; i<longitud && contador<top; i++ )
+	{
+		for(j=i+1;j<longitud && contador<top ;j++)
+		{
+			if( productos[i].precio<=productos[j].precio && productos[j].estado==1 )
+			{
+				eAux=productos[i];
+				productos[i]=productos[j];
+				productos[j]=eAux;
+
+			}
+
+		}
+
+		if( productos[i].tipo== tipo )
+		{
+			contador++;
+			mostrarUnProducto(productos[i]);
+		}
+
+	}
+
+
+
+
+}
+
 
 void productosMasCaros(eProducto arregloDeProductos[], int longitud, int top){
 
@@ -707,6 +713,124 @@ void modificarUnProducto(eProducto producto[], int indice, eTipoProducto arreglo
 
 }
 
+void mostrarVariosProductosTipoMasImportado( eProducto arregloDeProductos[], int lonProductos, eTipoProducto arregloTipoProducto[], int lonTipo , eNacionalidad arregloNacionalidades[], int lonNacionalidad ){
+
+	int i, j, k;
+	int auxTipo, auxCont;
 
 
+
+	//se crea un arreglo con espacio para todas las posibles combinaciones de tipo*nacionalidad
+	eTipoNacionalidad relacionTipoNacionalidad[lonTipo*lonNacionalidad];
+
+	//se crea matriz contadora
+	int matriz[lonTipo][2];
+
+
+
+
+	//se inicializa el arreglo de relacion
+	for( i=0;i<lonTipo*lonNacionalidad;i++ )
+	{
+		relacionTipoNacionalidad[i].idNacionalidad=-1  ;
+	}
+
+	//se identifica la primera columna de la matriz con idTipo correspondiente y la segunda columna actuara de contador el cual debe inicializarse
+	for( i=0;i<lonTipo;i++ )
+	{
+		matriz[i][0]=arregloTipoProducto[i].idTipo;
+		matriz[i][1]=0;
+	}
+
+
+	//chequea posibles valores de tipo
+	for( i=0;i<lonTipo;i++ )
+	{
+		//chequea posibles valores de nacionalidad
+		for( j=0;j<lonNacionalidad;j++ )
+		{
+
+			relacionTipoNacionalidad[i*lonNacionalidad+j].idTipo=arregloDeProductos[i].tipo  ;
+			relacionTipoNacionalidad[i*lonNacionalidad+j].idNacionalidad=arregloDeProductos[j].nacionalidad ;
+
+//			for( k=0; k<lonProductos; k++ )
+//			{
+//
+//
+//				//compara coincidencias con arreglo de productos y guarda el dato de la coincidencia
+//				if( arregloTipoProducto[i].idTipo==arregloDeProductos[k].tipo && arregloNacionalidades[j].idNacionalidad==arregloDeProductos[k].nacionalidad )
+//				{
+//					relacionTipoNacionalidad[i*lonNacionalidad+j].idTipo=arregloDeProductos[k].tipo  ;
+//					relacionTipoNacionalidad[i*lonNacionalidad+j].idNacionalidad=arregloDeProductos[k].nacionalidad ;
+//
+//				}
+//
+//			}
+
+		}
+	}
+
+
+	printf("muestra datos del arreglo de relacion");
+	for (i=0;i<lonNacionalidad*lonTipo;i++)
+	{
+		printf("\nindice: %d		 idTipo: %d			idNacionalidad: %d", i,relacionTipoNacionalidad[i].idTipo , relacionTipoNacionalidad[i].idNacionalidad );
+	}
+
+
+
+//
+//
+//	//detecta las estructuras de relacionTipoNacionalidad dadas de alta y de origen extranjero para informarlas a la matriz
+//	for( k=0;k<lonTipo*lonNacionalidad;k++ )
+//	{
+//		if( relacionTipoNacionalidad[k].idTipo!=-1 && relacionTipoNacionalidad[k].idNacionalidad!=OTRO )
+//		{
+//			for( j=0;j<lonTipo;j++ )
+//			{
+//				if( matriz[j][0]==relacionTipoNacionalidad[k].idTipo )
+//				{
+//					matriz[j][1]=basicMath(matriz[j][i], 1, '+');
+//				}
+//			}
+//		}
+//
+//	}
+//
+//
+//	for( i=0;i<lonTipo;i++ )
+//	{
+//		printf("\ntipo: %d\t\tcantidad de productos importados: %d",matriz[i][0],matriz[i][1]);
+//	}
+//
+//
+//
+//	//se reorganiza la matriz segun los contadores mas altos y se muestra
+//	for( i=0;i<lonTipo;i++ )
+//	{
+//		for( j=i+1;j<lonTipo;j++ )
+//		{
+//			if(matriz[i][1]<matriz[j][1])
+//			{
+//				auxTipo=matriz[i][0];
+//				auxCont=matriz[i][1];
+//
+//				matriz[i][0]=matriz[j][0];
+//				matriz[i][1]=matriz[j][1];
+//
+//				matriz[j][0]=auxTipo;
+//				matriz[j][1]=auxCont;
+//
+//			}
+//		}
+//	}
+//
+//	for( i=0;i<lonTipo;i++ )
+//	{
+//		printf("\ntipo: %d\t\tcantidad de productos importados: %d",matriz[i][0],matriz[i][1]);
+//	}
+//
+//
+
+}
 

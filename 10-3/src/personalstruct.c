@@ -6,7 +6,7 @@
  */
 
 
-#define PERSONAL_STRUCT_DESCRIPCION 360
+#define PERSONAL_STRUCT_DESCRIPCION 36
 
 #define EEUU 1
 #define CHINA 2
@@ -23,7 +23,6 @@
 #include <string.h>
 #include "personalio.h"
 
-
 typedef struct{
 	int idProducto;
 	char descripcion[PERSONAL_STRUCT_DESCRIPCION];
@@ -33,11 +32,11 @@ typedef struct{
 	int estado;
 }eProducto;
 
-
 typedef struct{
 	int idTipo;
 	char descripcionTipo[PERSONAL_STRUCT_DESCRIPCION];
 }eTipoProducto;
+
 
 
 ////////////////////// TIPOS
