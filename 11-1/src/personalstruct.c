@@ -715,8 +715,9 @@ void modificarUnProducto(eProducto producto[], int indice, eTipoProducto arreglo
 
 void mostrarVariosProductosTipoMasImportado( eProducto arregloDeProductos[], int lonProductos, eTipoProducto arregloTipoProducto[], int lonTipo , eNacionalidad arregloNacionalidades[], int lonNacionalidad ){
 
-	int i, j, k;
-	int auxTipo, auxCont;
+	int i, j;
+	//int k;
+	//int auxTipo, auxCont;
 
 
 
