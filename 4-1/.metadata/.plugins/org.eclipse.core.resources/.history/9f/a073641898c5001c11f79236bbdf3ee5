@@ -1,0 +1,473 @@
+/*
+ ============================================================================
+ Name        : 7-1.c
+ Author      : Carlo Morici
+ Version     :
+ Copyright   : Your copyright notice
+ Description : Ejercicio 7-1:
+Una empresa importadora que comercializa productos Apple, decide registrar de sus productos los
+siguientes datos:
+-idProducto (numerico)
+-descripcion (alfanumérico)
+-nacionalidad (numérico, por el momento utilizaremos un define: EEUU - CHINA - OTRO)
+-tipo (numérico, por el momento utilizaremos un define: IPHONE -MAC - IPAD -
+ACCESORIOS)
+-precio (numérico decimal)
+Realizar un programa que permita interactuar con un menú de usuarios con las siguientes
+opciones:
+i) ALTA Producto: Se ingresan los datos de UN solo producto. Siempre y cuando haya espacio
+disponible en el array.
+j) BAJA Producto: A partir del ingreso del ID. Si existe el producto desaparece de la lista,
+dejando espacio disponible para un nuevo producto.
+k) MODIFICACIÓN Producto: A partir del ingreso del ID. Si existe se podrá modificar el precio
+o el tipo.
+l) LISTADO Productos.
+m) LISTADO ordenado por precio.
+n) LISTADO ordenado por descripción.
+ ============================================================================
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
+#include "personalio.h"
+
+#define CANT 3
+#define STR_DSC 150
+
+#define EEUU 1
+#define CHINA 2
+#define OTRO 3
+
+#define IPHONE 1
+#define MAC 2
+#define IPAD 3
+#define ACCESORIO 4
+
+typedef struct{
+	int idProducto;
+	char descripcion[STR_DSC];
+	float precio;
+	int nacionalidad;
+	int tipo;
+	int estado;
+}eProducto;
+
+
+eProducto alta(void);
+void MostrarUnProducto(eProducto unProducto);
+void MostrarVariosProductos(eProducto unosProductos[], int longitud);
+void MostrarVariosProductosPrecio(eProducto unosProductos[], int longitud);
+void MostrarVariosProductosDescripcion(eProducto unosProductos[], int longitud);
+int buscaEstado(eProducto estructura[], int longitud, int estadoBuscado);
+int buscaID(eProducto estructura[], int longitud, char *mensaje);
+void bajaID(eProducto estructura[], int longitud);
+
+int main(void){
+	setbuf(stdout, NULL);
+
+	eProducto productos[CANT];
+	int i, indice;//i, flag;
+	int contadorDatos=0, auxID;
+	//int organizador[CANT];
+	char confirmar;
+	int opcion, subOpcion;
+
+	//Inicializamos los estados
+	for( i=0; i<CANT; i++ ){
+		productos[i].estado = 0;
+	}
+
+
+
+
+	do{
+
+		opcion = menu( "\nMENU\n1. Alta\n2. Baja\n3. Modificar\n4. Listar\n5. Buscar un dato\n6. Salir\n\t 20. HardCode" );
+
+		switch( opcion ){
+			////////////////////////////////////////////////////////////////////Alta
+			case 1:
+
+
+				 indice=buscaEstado(productos, CANT, 0);
+
+				 if( indice==-1 ){
+					 printf("No hay espacio disponible...");
+				 }
+				 else{
+					 productos[indice] = alta();
+					 contadorDatos++;
+				 }
+
+				break;
+
+
+
+
+				////////////////////////////////////////////////////////////////////Baja
+			case 2:
+
+				bajaID(productos, CANT);
+
+				break;
+
+
+
+
+
+
+				////////////////////////////////////////////////////////////////////Modificar
+				/*
+				 * k) MODIFICACIÓN Producto: A partir del ingreso del ID. Si existe se podrá modificar el precio
+				 * o el tipo.
+				 */
+			case 3:
+				if( contadorDatos > 0 ){
+					printf("id del Producto a modificar: ");
+					fflush(stdin);
+					scanf("%d", &auxID);
+
+					for( i=0; i<CANT; i++ ){
+						if( auxID == productos[i].idProducto && productos[i].estado == 1 ){
+							MostrarUnProducto( productos[i] );
+							do{
+								subOpcion = menu( "MENU\n1. idProducto\n2. descripcion\n3. precio\n4. tipo\n5. nacionalidad\n6. Salir" );
+
+								switch( subOpcion ){
+									case 1:
+										productos[i].idProducto=intScan("idProducto: ");
+										break;
+									case 2:
+										stringScan( productos[i].descripcion, STR_DSC, "descripcion: ");
+
+										break;
+									case 3:
+										productos[i].precio= floatScan("precio: ");
+										break;
+									case 4:
+										productos[i].nacionalidad=intScan("nacionalidad: 1: EEUU | 2: CHINA | 3: OTRO");
+										break;
+									case 5:
+										productos[i].tipo= intScan("tipo: 1: IPHONE | 2: MAC | 3: IPAD | 4: ACCESORIO");
+										break;
+									case 6:
+										printf("Saliendo de modificar...");
+									default:
+										printf("La opcion ingresada es incorrecta..");
+
+								}
+							}while( subOpcion != 6 );
+							break;
+						}
+					}
+				}
+				else{
+					printf("No existen datos cargados...");
+				}
+				break;
+
+
+
+
+
+
+
+
+				////////////////////////////////////////////////////////////////////Listar
+			case 4:
+				if( contadorDatos > 0 ){
+
+
+					do
+					{
+						subOpcion = menu( "\nelija que listado desea ver:\n1. LISTADO Productos.\n2. LISTADO ordenado por precio.\n3. LISTADO ordenado por descripción.\n4. Salir" );
+
+						switch( subOpcion )
+						{
+
+						//listado simple
+						case 1:
+							MostrarVariosProductos( productos, CANT);
+							break;
+
+						//listado por precio
+						case 2:
+
+							MostrarVariosProductosPrecio( productos, CANT);
+							break;
+
+						//listado por descripcion
+						case 3:
+
+							MostrarVariosProductosDescripcion( productos, CANT);
+							break;
+
+						case 4:
+							printf("\nha salido del menu de lista")
+
+
+						default:
+							printf("\nLa opcion ingresada es incorrecta..");
+
+
+						}
+
+					}while( subOpcion!=4 );
+
+
+
+				}
+				else{
+					printf("No hay datos cargados...");
+				}
+				break;
+
+
+
+				/////////////////////////// ______________________ BORRAR ______________________ //////////////////////
+			case 20:
+				printf("\nHardCode__________________________________");
+
+				productos[0].idProducto=1;
+				strcpy(productos[0].descripcion, "descripcion 1");
+				productos[0].precio=2;
+				productos[0].nacionalidad=1;
+				productos[0].tipo=1;
+
+				productos[0].estado=1;
+				contadorDatos++;
+
+
+				productos[1].idProducto=2;
+				strcpy(productos[1].descripcion, "descripcion 2");
+				productos[1].precio=1;
+				productos[1].nacionalidad=2;
+				productos[1].tipo=2;
+
+				productos[1].estado=1;
+				contadorDatos++;
+
+				break;
+
+				/////////////////////////// ______________________ BORRAR ______________________ //////////////////////
+
+
+
+			default:
+				printf("La opcion ingresada es incorrecta..");
+		}
+
+
+	}while( opcion != 6 );
+}
+
+
+void MostrarUnProducto(eProducto unProducto){
+
+	char strNac[6];
+	char strTipo[12];
+
+	printf("\nidProducto: %d \tdescripcion: %s \tprecio: %.2f", unProducto.idProducto, unProducto.descripcion, unProducto.precio);
+
+
+	switch( unProducto.nacionalidad )
+	{
+	case EEUU:
+		strcpy(strNac, "EEUU");
+		break;
+
+	case CHINA:
+		strcpy(strNac, "CHINA");
+		break;
+
+	case OTRO:
+		strcpy(strNac, "OTRO");
+
+	}
+
+	switch( unProducto.tipo )
+	{
+	case IPHONE:
+		strcpy(strTipo, "IPHONE");
+		break;
+
+	case MAC:
+		strcpy(strTipo, "MAC");
+		break;
+
+	case IPAD:
+		strcpy(strTipo, "IPAD");
+		break;
+
+	case ACCESORIO:
+		strcpy(strTipo, "ACCESORIO");
+
+	}
+
+
+	printf("\tnacionalidad: %s \ttipo: %s", strNac, strTipo);
+
+
+}
+
+void MostrarVariosProductos(eProducto unosProductos[], int longitud){
+
+	int i;
+
+	for( i=0; i<longitud; i++ ){
+		if( unosProductos[i].estado == 1 ){
+			MostrarUnProducto( unosProductos[i] );
+		}
+	}
+
+}
+
+void MostrarVariosProductosPrecio(eProducto unosProductos[], int longitud){
+
+	int i, j;
+	eProducto eAux, productos[longitud];
+
+
+
+	for (i=0;i<longitud;i++)
+	{
+		productos[i]=unosProductos[i];
+	}
+
+	for( i=0; i<longitud; i++ )
+	{
+		for(j=i+1;j<longitud;j++)
+		{
+			if( productos[i].precio>=productos[j].precio )
+			{
+				eAux=productos[i];
+				productos[i]=productos[j];
+				productos[j]=eAux;
+
+				// 0	1	2	3	4	ºposiciones
+
+				// 0	5	8	20	-2	º0
+				// -2	5	8	20	0	º1
+				// -2	0	8	20	5	º2
+				// -2	0	5	20	8	º3
+				// -2	0	5	8	20	º4
+			}
+		}
+	}
+
+	MostrarVariosProductos( productos, longitud);
+
+
+}
+
+void MostrarVariosProductosDescripcion(eProducto unosProductos[], int longitud){
+
+	int i, j;
+	eProducto eAux, productos[longitud];
+
+
+
+	for (i=0;i<longitud;i++)
+	{
+		productos[i]=unosProductos[i];
+	}
+
+	for( i=0; i<longitud; i++ )
+	{
+		for(j=i+1;j<longitud;j++)
+		{
+			if( strcmp(productos[i].descripcion, productos[j].descripcion)>0 )
+			{
+				eAux=productos[i];
+				productos[i]=productos[j];
+				productos[j]=eAux;
+
+			}
+		}
+	}
+
+	MostrarVariosProductos( productos, longitud);
+
+
+}
+
+eProducto alta(void){
+
+	eProducto ticket;
+
+	ticket.idProducto=intScan("idProducto: ");
+
+	stringScan( ticket.descripcion, STR_DSC, "descripcion: ");
+
+	ticket.precio= floatScan("precio: ");
+
+	ticket.nacionalidad=intScan("nacionalidad: 1: EEUU | 2: CHINA | 3: OTRO");
+
+	ticket.tipo= intScan("tipo: 1: IPHONE | 2: MAC | 3: IPAD | 4: ACCESORIO");
+
+	ticket.estado = 1;
+
+	return ticket;
+
+}
+
+int buscaEstado(eProducto estructura[], int longitud, int estadoBuscado){
+
+	int i, retorno=-1;
+
+
+	for( i=0; i<longitud; i++ ){
+		if( estructura[i].estado == estadoBuscado ){
+			retorno=i;
+
+			break;
+		}
+	}
+
+	return retorno;
+
+}
+
+int buscaID(eProducto estructura[], int longitud, char *mensaje){
+
+	int idBuscada, i, retorno=-1;
+
+	idBuscada=intScan( mensaje );
+
+	for( i=0; i<longitud; i++ ){
+		if( estructura[i].idProducto == idBuscada ){
+			retorno=i;
+
+			break;
+		}
+	}
+
+	return retorno;
+
+}
+
+
+void bajaID(eProducto estructura[], int longitud){
+	int indice;
+
+
+	indice=buscaID(estructura, longitud, "\nIngrese el numero de ID a dar de baja_ ");
+
+	if ( indice==-1 ){
+		printf("\nEl ID solicitado no existe.");
+	}
+	else if( estructura[indice].estado==-1 ){
+		printf("\nEl ID solicitado ya fue dado de baja con anterioridad.");
+
+	}
+	else if( estructura[indice].estado==1 ){
+
+		estructura[indice].estado=-1;
+		printf("\nEl ID solicitado acaba de ser dado de baja.");
+
+	}
+
+}
+

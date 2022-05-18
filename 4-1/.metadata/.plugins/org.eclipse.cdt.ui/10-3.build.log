@@ -1,0 +1,21 @@
+13:23:54 **** Rebuild of configuration Debug for project 10-3 ****
+Info: Internal Builder is used for build
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -o "src\\10-3.o" "..\\src\\10-3.c" 
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -o "src\\personalio.o" "..\\src\\personalio.c" 
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -o "src\\personalstruct.o" "..\\src\\personalstruct.c" 
+..\src\personalstruct.c: In function 'productosMasCarosTipo':
+..\src\personalstruct.c:162:4: warning: implicit declaration of function 'mostrarUnProducto'; did you mean 'mostrarTipoProductoID'? [-Wimplicit-function-declaration]
+  162 |    mostrarUnProducto(productos[i]);
+      |    ^~~~~~~~~~~~~~~~~
+      |    mostrarTipoProductoID
+..\src\personalstruct.c: At top level:
+..\src\personalstruct.c:212:6: warning: conflicting types for 'mostrarUnProducto'
+  212 | void mostrarUnProducto(eProducto unProducto){
+      |      ^~~~~~~~~~~~~~~~~
+..\src\personalstruct.c:162:4: note: previous implicit declaration of 'mostrarUnProducto' was here
+  162 |    mostrarUnProducto(productos[i]);
+      |    ^~~~~~~~~~~~~~~~~
+gcc -o 10-3.exe "src\\10-3.o" "src\\personalio.o" "src\\personalstruct.o" 
+
+13:23:56 Build Finished. 0 errors, 2 warnings. (took 1s.515ms)
+

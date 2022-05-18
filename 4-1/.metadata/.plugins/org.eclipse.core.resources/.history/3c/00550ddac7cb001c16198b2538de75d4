@@ -1,0 +1,94 @@
+/*
+ * albumesArtistasMusicales.h
+ *
+ *  Created on: 4 may 2022
+ *      Author: Cajlo
+ */
+
+#ifndef ALBUMESARTISTASMUSICALES_H_
+#define ALBUMESARTISTASMUSICALES_H_
+
+#define AAM_TAM_DESC 51
+
+
+typedef struct{
+	int id;
+	char descripcion[AAM_TAM_DESC];
+}eDiscografia;
+
+
+typedef struct{
+	int id;
+	char descripcion[AAM_TAM_DESC];
+}eTipoArtista;
+
+
+typedef struct{
+	int id;
+	char descripcion[AAM_TAM_DESC];
+}eArtista;
+
+
+
+typedef struct{
+	int id;
+	char descripcion[AAM_TAM_DESC];
+	eAaaaMmDd fechaPublicacion;
+	float precio;
+
+	int artista;
+
+
+	int estado;
+}eAlbum;
+
+
+
+/**
+ * @brief revisa un arreglo de estructuras buscando la priemra posicion con el estado indicado
+ *
+ * @param estructura nombre del arreglo
+ * @param longitud longitud del arreglo
+ * @param estadoBuscado estado buscado en el arreglo
+ * @return posicion donde se consigio el estado, de lo contrario retorna -1
+ */
+int buscaEstado(eAlbum estructura[], int longitud, int estadoBuscado);
+
+int hardCodeAlbum(eAlbum estructura[], int longitud, int id);
+
+eAlbum alta(int id);
+
+int buscaAlbumID(eAlbum estructura[], int longitud, char *mensaje);
+
+void MostrarUnAlbum(eAlbum unAlbum);
+
+void modificarUnAlbum(eAlbum estructura[], int indice);
+
+int bajaAlbumID(eAlbum estructura[], int longitud);
+
+float totalPrecioAlbumes(eAlbum albumes[], int longitud);
+
+
+float totalPrecioAlbumes(eAlbum albumes[], int longitud);
+
+void mostrarVariosAlbumes(eAlbum arregloDeProductos[], int longitud);
+
+void mostrarAlbumMasBaratoQue(eAlbum arregloDeProductos[], int longitud, float precio);
+
+void informeA(eAlbum albumes[], int longitud, int contadorAlbumes);
+
+void mostrarAlbumQueSalioLuegoDel2000(eAlbum arregloDeProductos[], int longitud);
+
+void mostrarUnaDiscografia(eDiscografia unDisco);
+
+
+void mostrarVariasDiscografias(eDiscografia discografia[], int lonDiscografia);
+
+
+void mostrarUnTipoArtista(eTipoArtista unTipo);
+
+void mostrarVariosTiposArtistas(eDiscografia arregloDeProductos[], int lonArtistas);
+
+
+
+#endif /* ALBUMESARTISTASMUSICALES_H_ */

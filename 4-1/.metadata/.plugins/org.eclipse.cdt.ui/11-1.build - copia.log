@@ -1,0 +1,13 @@
+19:43:03 **** Rebuild of configuration Debug for project 11-1 ****
+Info: Internal Builder is used for build
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -o "src\\11-1.o" "..\\src\\11-1.c" 
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -o "src\\personalstruct.o" "..\\src\\personalstruct.c" 
+..\src\personalstruct.c: In function 'mostrarVariosProductosTipoMasImportado':
+..\src\personalstruct.c:728:6: warning: variable 'matriz' set but not used [-Wunused-but-set-variable]
+  728 |  int matriz[lonTipo][2];
+      |      ^~~~~~
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -o "src\\personalio.o" "..\\src\\personalio.c" 
+gcc -o 11-1.exe "src\\11-1.o" "src\\personalio.o" "src\\personalstruct.o" 
+
+19:43:04 Build Finished. 0 errors, 1 warnings. (took 947ms)
+

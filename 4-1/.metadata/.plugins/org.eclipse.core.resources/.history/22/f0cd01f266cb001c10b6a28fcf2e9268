@@ -1,0 +1,39 @@
+/*
+ * albumesArtistasMusicales.h
+ *
+ *  Created on: 4 may 2022
+ *      Author: Cajlo
+ */
+
+#ifndef ALBUMESARTISTASMUSICALES_H_
+#define ALBUMESARTISTASMUSICALES_H_
+
+#define AAM_TAM_DESC 51
+
+typedef struct{
+	int id;
+	char [AAM_TAM_DESC]
+}eDiscografia;
+
+
+typedef struct{
+	int id;
+	char [AAM_TAM_DESC]
+}eTipoArtista;
+
+
+Tipo artista: (1, solista; 2, banda)
+ Código (autoincremental)
+ Descripción (máximo 51 caracteres)
+
+Artista:
+ Código de artista (autoincremental)
+ Nombre (máximo 51 caracteres)
+
+Álbum:
+ Código de album (autoincremental)
+ Título (máximo 51 caracteres) Validar
+ Fecha de publicación Validar
+ Importe Validar
+
+#endif /* ALBUMESARTISTASMUSICALES_H_ */

@@ -1,0 +1,300 @@
+/*
+ ============================================================================
+ Name        : laboratorio1_parcial1.c
+ Author      : Carlo Morici
+ Version     :
+ Copyright   : Your copyright notice
+ Description : Hello World in C, Ansi-style
+ ============================================================================
+ */
+
+#define TIPOS_ARTISTAS 3
+#define ALBUMES 10
+#define ARTISTAS 5
+#define DISCOGRAFIAS 5
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+#include <string.h>
+#include "personalio.h"
+#include "albumesArtistasMusicales.h"
+
+
+
+
+
+int main(void) {
+	setbuf(stdout, NULL);
+
+	eAlbum albumes[ALBUMES];
+	eArtista artistas[ARTISTAS];
+	eTipoArtista tiposArtistas[TIPOS_ARTISTAS];
+	eDiscografia discografias[DISCOGRAFIAS];
+
+
+
+	int idAlbum=0;
+	int idArtista=0;
+	int idTipo=0;
+	int idDiscografia=0;
+
+	int contadorAlbumes=0;
+
+	int i, indice, opcion, subOpcion;
+
+
+	//se inicializan los estados
+		for( i=0; i<ALBUMES; i++ ){
+			albumes[i].estado = 0;
+		}
+
+
+
+
+		do{
+
+			opcion = intScan( "\n\nMENU\n1. Alta\n2. Modificar\n3. Baja\n4. Informar\n5. Listar\n\n\t6. HardCode\n\n\t7. Salir" );
+
+			switch( opcion ){
+
+
+
+				//////////////////////////////////////////////////////////////////// ALTA
+				case 1:
+
+
+					 indice=buscaEstado(albumes, ALBUMES, 0);
+
+					 if( indice==-1 ){
+						 printf("No hay espacio disponible...");
+					 }
+					 else{
+						 albumes[indice] = alta(idAlbum);
+						 idAlbum++;
+						 contadorAlbumes++;
+
+					 }
+
+					break;
+
+
+
+
+					//////////////////////////////////////////////////////////////////// MODIFICAR
+				case 2:
+					if( mayorQue(contadorAlbumes, 0) ){
+
+						indice=buscaAlbumID(albumes, ALBUMES, "\nIntroduzca el ID que desea modificar_ ");
+						if ( indice==-1 || albumes[indice].estado==-1 ){
+							printf("\nEl ID ingresado no existe");
+
+						}
+						else{
+
+							modificarUnAlbum(albumes, indice);
+							break;
+						}
+
+
+					}
+					else{
+						printf("No existen datos cargados...");
+					}
+					break;
+
+
+
+
+
+
+
+
+					//////////////////////////////////////////////////////////////////// BAJA
+				case 3:
+
+					contadorAlbumes-= bajaAlbumID(albumes, ALBUMES);
+
+					break;
+
+
+
+
+
+
+
+					//////////////////////////////////////////////////////////////////// INFORMAR
+				case 4:
+
+					if( mayorQue(contadorAlbumes, 0) )
+					{
+						do
+						{
+							subOpcion = intScan( "\n\n\telija que informe desea ver:\n1. Total y promedio de los importes, y cuantos albumes no superan ese promedio.\n2. Cantidad de álbumes cuya fecha de publicación es posterior a 31/12/1999.\n\n8. Salir\nElija donde desea ingresar " );
+
+							switch( subOpcion )
+							{
+
+
+							//A. Total y promedio de los importes, y cuántos álbumes no superan ese promedio.
+							case 1:
+								informeA( albumes, ALBUMES, contadorAlbumes);
+								break;
+
+
+
+							//B. Cantidad de álbumes cuya fecha de publicación es posterior a 31/12/1999.
+							case 2:
+								mostrarAlbumQueSalioLuegoDel2000(albumes, ALBUMES);
+								break;
+
+
+
+
+
+							case 8:
+								printf("\nha salido del menu de INFORMES");
+								break;
+
+
+							default:
+								printf("\nLa opcion ingresada es incorrecta..");
+
+
+							}
+
+						}while( subOpcion!=8 );
+
+
+
+					}
+					else{
+						printf("No hay datos cargados...");
+					}
+					break;
+
+
+
+
+
+
+					//////////////////////////////////////////////////////////////////// LISTAR
+				case 5:
+
+
+
+					//F. Todos los álbumes cuya fecha de publicación es posterior a 31/12/1999.
+					//G. Todos los álbumes que no superan el promedio de los importes.
+					//hecho antes
+
+
+					if( contadorAlbumes > 0 ){
+
+
+						do
+						{
+							subOpcion = intScan( "\nelija que listado desea ver:\n1. LISTADO Productos.\n2. LISTADO ordenado por precio.\n3. LISTADO ordenado por descripción.\n4. Salir" );
+
+							switch( subOpcion )
+							{
+
+							//A. Todas las discográficas.
+							case 1:
+								mostrarVariasDiscografias( discografias, DISCOGRAFIAS);
+								break;
+
+							//B. Todos los tipos de artistas musicales.
+							case 2:
+								mostrarVariosTiposArtistas(tiposArtistas, TIPOS_ARTISTAS);
+								break;
+
+							//C. Todos los artistas.
+							case 3:
+
+								mostrarVariosArtistas( artistas, ARTISTAS);
+								break;
+
+							//D. Todos los álbumes.
+							case 4:
+								mostrarVariosAlbumes(albumes, ALBUMES);
+								break;
+
+							//E. Realizar un solo listado de los álbumes ordenados por los siguientes criterios:
+							//o Importe (descendentemente)
+							//o Título (ascendentemente)
+
+
+
+							case 5:
+								mostrarVariosAlbumesPrecioDescripcion( albumes, ALBUMES );
+								break;
+
+							//H. Todos los álbumes de un artista determinado.
+							//I. Todos los álbumes de cada año.
+							//J. El álbum o los álbumes más baratos.
+
+							case 6:
+								mostrarVariosAlbumesPorArtista(albumes, ALBUMES);
+								break;
+
+							case 7:
+								 mostrarVariosAlbumesPoranio(albumes, ALBUMES);
+								 break;
+
+
+							//opcion salir
+							case 11:
+								printf("\nha salido del menu de lista");
+								break;
+
+
+							default:
+								printf("\nLa opcion ingresada es incorrecta..");
+
+
+							}
+
+						}while( subOpcion!=4 );
+
+
+
+					}
+					else{
+						printf("No hay datos cargados...");
+					}
+					break;
+
+
+
+					/////////////////////////////// HARDCODE
+
+				case 6:
+
+					if( hardCodeAlbum(albumes, ALBUMES, idAlbum  ) )
+					{
+						contadorAlbumes++;
+						idAlbum++;
+					}
+
+					break;
+
+
+					//////////////////////// SALIDA
+				case 7:
+					printf("\n\n\nSALUDOS");
+					break;
+
+
+					///////////////////////////////////// DEFAULT
+				default:
+					printf("La opcion ingresada es incorrecta..");
+			}
+
+
+		}while( opcion != 6 );
+
+
+	}

@@ -1,0 +1,239 @@
+/*
+ * albumesArtistasMusicales.c
+ *
+ *  Created on: 4 may 2022
+ *      Author: Cajlo
+ */
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+#include <string.h>
+#include "personalio.h"
+#include "albumesArtistasMusicales.h"
+
+
+
+int buscaEstado(eAlbum estructura[], int longitud, int estadoBuscado){
+
+	int i, retorno=-1;
+
+
+	for( i=0; i<longitud; i++ ){
+		if( estructura[i].estado == estadoBuscado ){
+			retorno=i;
+
+			break;
+		}
+	}
+
+	return retorno;
+
+}
+
+eAlbum alta(int id){
+
+	eAlbum ticket;
+	int flag;
+
+	//se recibe el ID desde el main
+	ticket.id= id;
+
+	//titulo del album
+	stringScan( ticket.descripcion, AAM_TAM_DESC, "ingrese titulo del album: ");
+
+	//precio del album
+	flag=0;
+	do
+	{
+		if( flag!=0 )
+		{
+			printf("\n error, precio debe ser mayor que 0. ");
+		}
+		ticket.precio= floatScan("precio: ");
+
+		flag=1;
+
+	}while( !floatVerify(ticket.precio, 1, 0) );
+
+
+
+
+
+
+
+	printf("\nDatos de fecha de publicacion");
+
+	//año
+	flag=0;
+	do
+		{
+			if( flag!=0 )
+			{
+				printf("\n error, año debe ser mayor que 1970. ");
+			}
+			ticket.fechaPublicacion.aaaa= intScan("ingrese año (AAAA): ");
+
+			flag=1;
+
+		}while( mayorQue(ticket.fechaPublicacion.aaaa, 1970 ) );
+
+	//mes
+	flag=0;
+	do
+		{
+			if( flag!=0 )
+			{
+				printf("\n error, mes debe ser un numero entre 1 y 12. ");
+			}
+			ticket.fechaPublicacion.mm= intScan("ingrese mes (MM): ");
+
+			flag=1;
+
+		}while( intVerify(ticket.fechaPublicacion.mm, 1, 12) );
+
+	//dia
+	flag=0;
+	do
+		{
+			if( flag!=0 )
+			{
+				printf("\n error, dia debe ser un numero entre 1 y 31. ");
+			}
+			ticket.fechaPublicacion.dd= intScan("ingrese dia (DD): ");
+
+			flag=1;
+
+		}while( intVerify(ticket.fechaPublicacion.dd, 1, 31) );
+
+
+	return ticket;
+}
+
+
+int buscaAlbumID(eAlbum estructura[], int longitud, char *mensaje){
+
+	int idBuscada, i, retorno=-1;
+
+	idBuscada=intScan( mensaje );
+
+	for( i=0; i<longitud; i++ ){
+		if( estructura[i].id == idBuscada ){
+			retorno=i;
+
+			break;
+		}
+	}
+
+	return retorno;
+
+}
+
+
+void MostrarUnAlbum(eAlbum unAlbum){
+
+
+
+	printf("\nidAlbum: %d \tdescripcion: %s \tprecio: $ %.2f", unAlbum.id, unAlbum.descripcion, unAlbum.precio);
+
+}
+
+
+void modificarUnAlbum(eAlbum estructura[], int indice){
+
+	int flag, opcion;
+
+	do{
+		printf("\nha seleccionado la estructura:\n");
+		MostrarUnAlbum( estructura[indice] );
+
+
+		printf("\nque desea modificar?");
+		opcion = intScan( "\n\nMENU\n1. Titulo\n2. Fecha de publicacion \n3. Importe \n\n\t4. Salir" );
+
+
+		switch( opcion ){
+
+		case 1:
+			stringScan( estructura[indice].descripcion, AAM_TAM_DESC, "ingrese titulo del album: ");
+			break;
+
+		case 2:
+
+			//año
+			flag=0;
+			do
+				{
+					if( flag!=0 )
+					{
+						printf("\n error, año debe ser mayor que 1970. ");
+					}
+					estructura[indice].fechaPublicacion.aaaa= intScan("ingrese año (AAAA): ");
+
+					flag=1;
+
+				}while( mayorQue(estructura[indice].fechaPublicacion.aaaa, 1970 ) );
+
+			//mes
+			flag=0;
+			do
+				{
+					if( flag!=0 )
+					{
+						printf("\n error, mes debe ser un numero entre 1 y 12. ");
+					}
+					estructura[indice].fechaPublicacion.mm= intScan("ingrese mes (MM): ");
+
+					flag=1;
+
+				}while( intVerify(estructura[indice].fechaPublicacion.mm, 1, 12) );
+
+			//dia
+			flag=0;
+			do
+				{
+					if( flag!=0 )
+					{
+						printf("\n error, dia debe ser un numero entre 1 y 31. ");
+					}
+					estructura[indice].fechaPublicacion.dd= intScan("ingrese dia (DD): ");
+
+					flag=1;
+
+				}while( intVerify(estructura[indice].fechaPublicacion.dd, 1, 31) );
+
+
+			break;
+
+		case 3:
+
+			//precio del album
+			flag=0;
+			do
+			{
+				if( flag!=0 )
+				{
+					printf("\n error, precio debe ser mayor que 0. ");
+				}
+				estructura[indice].precio= floatScan("precio: ");
+
+				flag=1;
+
+			}while( !floatVerify(estructura[indice].precio, 1, 0) );
+
+			break;
+
+		case 4:
+			printf("Saliendo de modificar...");
+			break;
+
+		default:
+				printf("La opcion ingresada es incorrecta..");
+
+		}
+	}while( opcion!=4 );
+
+}
+

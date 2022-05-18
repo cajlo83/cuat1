@@ -1,0 +1,49 @@
+/*
+ * albumesArtistasMusicales.h
+ *
+ *  Created on: 4 may 2022
+ *      Author: Cajlo
+ */
+
+#ifndef ALBUMESARTISTASMUSICALES_H_
+#define ALBUMESARTISTASMUSICALES_H_
+
+#define AAM_TAM_DESC 51
+
+
+
+typedef struct{
+	int id;
+	char descripcion[AAM_TAM_DESC];
+}eDiscografia;
+
+
+typedef struct{
+	int id;
+	char descripcion[AAM_TAM_DESC];
+}eTipoArtista;
+
+
+typedef struct{
+	int id;
+	char descripcion[AAM_TAM_DESC];
+}eArtista;
+
+
+
+typedef struct{
+	int id;
+	char descripcion[AAM_TAM_DESC];
+	eAaaaMmDd fechaPublicacion;
+
+	int estado=0;
+}eAlbum;
+
+
+Álbum:
+ Código de album (autoincremental)
+ Título (máximo 51 caracteres) Validar
+ Fecha de publicación Validar
+ Importe Validar
+
+#endif /* ALBUMESARTISTASMUSICALES_H_ */

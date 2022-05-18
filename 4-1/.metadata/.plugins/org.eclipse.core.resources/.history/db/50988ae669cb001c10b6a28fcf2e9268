@@ -1,0 +1,34 @@
+/*
+ ============================================================================
+ Name        : laboratorio1_parcial1.c
+ Author      : Carlo Morici
+ Version     :
+ Copyright   : Your copyright notice
+ Description : Hello World in C, Ansi-style
+ ============================================================================
+ */
+
+#define TIPOS_ARTISTAS 3
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+#include <string.h>
+#include "personalio.h"
+#include "albumesArtistasMusicales.h"
+
+
+
+
+
+int main(void) {
+	setbuff(stdout, NULL);
+
+	eTipoArtista tiposArtistas[TIPOS_ARTISTAS];
+
+
+	int opcion;
+	int idAlbum;
+
+}

@@ -1,0 +1,8 @@
+19:43:06 **** Rebuild of configuration Debug for project 2-4 ****
+Info: Internal Builder is used for build
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -o "src\\2-4.o" "..\\src\\2-4.c" 
+gcc -o 2-4.exe "src\\2-4.o" 
+Command canceled
+
+19:43:07 Build Finished. 0 errors, 0 warnings. (took 420ms)
+

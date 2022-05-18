@@ -1,0 +1,9 @@
+01:37:07 **** Incremental Build of configuration Debug for project 15-2 ****
+Info: Internal Builder is used for build
+g++ -o 15-2.exe "src\\15-2.o" "src\\15-2.o" 
+c:/mingw/bin/../lib/gcc/mingw32/9.2.0/../../../../mingw32/bin/ld.exe: src\15-2.o: in function `main':
+C:\Users\Cajlo\Desktop\clases\T. programacion\1er cuatrimestre\lab programacion 1\cuat1\15-2\Debug/../src/15-2.c:14: multiple definition of `main'; src\15-2.o:C:\Users\Cajlo\Desktop\clases\T. programacion\1er cuatrimestre\lab programacion 1\cuat1\15-2\Debug/../src/15-2.c:14: first defined here
+collect2.exe: error: ld returned 1 exit status
+
+01:37:07 Build Failed. 2 errors, 0 warnings. (took 236ms)
+

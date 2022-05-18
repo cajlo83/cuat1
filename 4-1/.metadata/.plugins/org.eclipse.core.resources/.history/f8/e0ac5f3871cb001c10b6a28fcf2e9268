@@ -1,0 +1,58 @@
+/*
+ * albumesArtistasMusicales.c
+ *
+ *  Created on: 4 may 2022
+ *      Author: Cajlo
+ */
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+#include <string.h>
+#include "personalio.h"
+#include "albumesArtistasMusicales.h"
+
+
+
+int buscaEstado(eAlbum estructura[], int longitud, int estadoBuscado){
+
+	int i, retorno=-1;
+
+
+	for( i=0; i<longitud; i++ ){
+		if( estructura[i].estado == estadoBuscado ){
+			retorno=i;
+
+			break;
+		}
+	}
+
+	return retorno;
+
+}
+
+eAlbum alta(int id){
+
+	eAlbum ticket;
+
+	ticket.id= id;
+
+	stringScan( ticket.descripcion, AAM_TAM_DESC, "descripcion: ");
+
+	ticket.precio= floatScan("precio: ");
+	do
+	{
+
+	}while( floatVerify(ticket.precio, 1, 0) )
+
+	ticket.nacionalidad=intScan("nacionalidad: 1: EEUU | 2: CHINA | 3: OTRO");
+
+	ticket.tipo= intScan("tipo: 1: IPHONE | 2: MAC | 3: IPAD | 4: ACCESORIO");
+
+	ticket.estado = 1;
+
+	return ticket;
+
+}

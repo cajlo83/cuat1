@@ -1,0 +1,180 @@
+/*
+ * albumesArtistasMusicales.h
+ *
+ *  Created on: 4 may 2022
+ *      Author: Cajlo
+ */
+
+#ifndef ALBUMESARTISTASMUSICALES_H_
+#define ALBUMESARTISTASMUSICALES_H_
+
+#define AAM_TAM_DESC 51
+#define MAX_ANIO 2022
+
+
+typedef struct{
+	int id;
+	char descripcion[AAM_TAM_DESC];
+}eDiscografia;
+
+
+typedef struct{
+	int id;
+	char descripcion[AAM_TAM_DESC];
+}eTipoArtista;
+
+
+typedef struct{
+	int id;
+	char descripcion[AAM_TAM_DESC];
+}eArtista;
+
+
+
+typedef struct{
+	int id;
+	char descripcion[AAM_TAM_DESC];
+	eAaaaMmDd fechaPublicacion;
+	float precio;
+
+	int artista;
+
+
+	int estado;
+}eAlbum;
+
+
+
+/**
+ * @brief revisa un arreglo de estructuras buscando la priemra posicion con el estado indicado
+ *
+ * @param estructura nombre del arreglo
+ * @param longitud longitud del arreglo
+ * @param estadoBuscado estado buscado en el arreglo
+ * @return posicion donde se consigio el estado, de lo contrario retorna -1
+ */
+int buscaEstado(eAlbum estructura[], int longitud, int estadoBuscado);
+
+/**
+ * @brief carga forzada de datos
+ *
+ * @param estructura estructura a forzar
+ * @param longitud longitud del arreglo
+ * @param id
+ * @return
+ */
+int hardCodeAlbum(eAlbum estructura[], int longitud, int id);
+
+/**
+ * @brief permite al usuario dar de alta un articulo
+ *
+ * @param id ID de la estructura
+ * @return retorna la estructura rellenada
+ */
+eAlbum alta(int id);
+
+/**
+ * @brief busca una estructura dentro de un arreglo a travez de l numero id
+ *
+ * @param estructura arreglo de estructura
+ * @param longitud longitud de la estructura
+ * @param mensaje mensaje para informacion al usuario
+ * @return retorna la posicion encotnrada en el arreglo
+ */
+int buscaAlbumID(eAlbum estructura[], int longitud, char *mensaje);
+
+/**
+ * @brief muestra los datos de una estructura
+ *
+ * @param unAlbum estructura a ser mostrada
+ */
+void MostrarUnAlbum(eAlbum unAlbum);
+
+/**
+ * @brief modifica la estructura con indice del arreglo agregado
+ *
+ * @param estructura estructura a ser modificada
+ * @param indice posicion de la estructura dentro del arreglo
+ */
+void modificarUnAlbum(eAlbum estructura[], int indice);
+
+/**
+ * @brief baja una estructura segun su numero de ID si esta habilitada
+ *
+ * @param estructura estructura a ser modificada
+ * @param longitud longitud del arreglo de estructuras
+ * @return retorna 1 en caso de exito o 0 de lo contrario
+ */
+int bajaAlbumID(eAlbum estructura[], int longitud);
+
+/**
+ * @brief regresa el total acumulado de precios de albumes
+ *
+ * @param albumes arreglo de albumes
+ * @param longitud longitud de larreglo
+ * @return total de precios
+ */
+float totalPrecioAlbumes(eAlbum albumes[], int longitud);
+
+/**
+ * @brief muestra las estructuras con estado=1 que estan en el arreglo
+ *
+ * @param arregloDeProductos nombre del arreglo
+ * @param longitud longitud del arreglo
+ */
+void mostrarVariosAlbumes(eAlbum arregloDeProductos[], int longitud);
+
+/**
+ * @brief muestra los albumes cuyo precio es menor que el numero indicado
+ *
+ * @param arregloDeProductos nombre del arreglo
+ * @param longitud longitud del arreglo
+ * @param precio precio a evaluar
+ */
+void mostrarAlbumMasBaratoQue(eAlbum arregloDeProductos[], int longitud, float precio);
+
+/**
+ * @brief hace el informe solicitado en A
+ *
+ * @param albumes
+ * @param longitud
+ * @param contadorAlbumes
+ */
+void informeA(eAlbum albumes[], int longitud, int contadorAlbumes);
+
+/**
+ * @briefmuestra los albumes que salieron luego de 31/12/1999
+ *
+ * @param arregloDeProductos arreglo donde buscar datos
+ * @param longitud longitud del arreglo
+ */
+void mostrarAlbumQueSalioLuegoDel2000(eAlbum arregloDeProductos[], int longitud);
+
+/**
+ * @brief muestra los datos de una estructura tipo eDiscografia
+ *
+ * @param unDisco
+ */
+void mostrarUnaDiscografia(eDiscografia unaDiscografia);
+
+
+void mostrarVariasDiscografias(eDiscografia discografia[], int lonDiscografia);
+
+
+void mostrarUnTipoArtista(eTipoArtista unTipo);
+
+void mostrarVariosTiposArtistas(eTipoArtista arreglo[], int lonArtistas);
+
+
+void mostrarUnArtista(eArtista unArtista);
+
+void mostrarVariosArtistas(eArtista arreglo[], int lonArtistas);
+
+void mostrarVariosAlbumesPrecioDescripcion(eAlbum arreglo[], int longitud);
+
+void mostrarVariosAlbumesPorArtista(eAlbum arreglo[], int longitud);
+
+void mostrarVariosAlbumesPoranio(eAlbum arreglo[], int longitud);
+
+
+#endif /* ALBUMESARTISTASMUSICALES_H_ */

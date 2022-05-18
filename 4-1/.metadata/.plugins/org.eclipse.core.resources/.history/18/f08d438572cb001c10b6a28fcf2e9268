@@ -1,0 +1,78 @@
+/*
+ * albumesArtistasMusicales.c
+ *
+ *  Created on: 4 may 2022
+ *      Author: Cajlo
+ */
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+#include <string.h>
+#include "personalio.h"
+#include "albumesArtistasMusicales.h"
+
+
+
+int buscaEstado(eAlbum estructura[], int longitud, int estadoBuscado){
+
+	int i, retorno=-1;
+
+
+	for( i=0; i<longitud; i++ ){
+		if( estructura[i].estado == estadoBuscado ){
+			retorno=i;
+
+			break;
+		}
+	}
+
+	return retorno;
+
+}
+
+eAlbum alta(int id){
+
+	eAlbum ticket;
+	int flag;
+
+	ticket.id= id;
+
+	stringScan( ticket.descripcion, AAM_TAM_DESC, "ingrese nombre del album: ");
+
+	flag=0;
+	do
+	{
+		if( flag!=0 )
+		{
+			printf("\n error, precio debe ser mayor que 0. ");
+		}
+		ticket.precio= floatScan("precio: ");
+
+		flag=1;
+
+	}while( !floatVerify(ticket.precio, 1, 0) );
+
+	printf("\nDatos de fecha de publicacion");
+	do
+		{
+			if( flag!=0 )
+			{
+				printf("\n error, año debe ser mayor que 1970. ");
+			}
+			ticket.fechaPublicacion.Aaaa= floatScan("ingrese año (AAAA): ");
+
+			flag=1;
+
+		}while( mayorQue(ticket.fechaPublicacion.Aaaa, 1970 ) );
+
+
+	ticket.fechaPublicacion.Aaaa
+	ticket.fechaPublicacion.Mm
+	ticket.fechaPublicacion.Dd
+
+	return ticket;
+
+}
