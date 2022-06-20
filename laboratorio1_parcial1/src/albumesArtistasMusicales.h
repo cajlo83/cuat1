@@ -9,47 +9,61 @@
 #define ALBUMESARTISTASMUSICALES_H_
 
 #define AAM_TAM_DESC 51
-#define MAX_ANIO 2022
+#define FECHA_MAX 20230101
+#define FECHA_MIN 19700101
+
+#define ESTADO_LIBRE 0
+#define ESTADO_OCUPADO 1
+#define ESTADO_ELIMINADO -1
+
+
 
 #define ARGENTINA 1
+#define USA 2
+#define COREA 3
+
+#include <time.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+#include <string.h>
+#include "personalio.h"
+#include "validaciones.h"
 
 
 typedef struct{
 	int id;
 	char descripcion[AAM_TAM_DESC];
 
-	int estado;
-}eDiscografia;
+
+}eDiscografica;
 
 
 typedef struct{
 	int id;
 	char descripcion[AAM_TAM_DESC];
 
-	int estado;
+
 }eTipoArtista;
 
-
 typedef struct{
 	int id;
 	char descripcion[AAM_TAM_DESC];
-	int discografia;
-	int tipo;
 
-	int estado;
+	int tipoArtista;
 }eArtista;
 
 
-
 typedef struct{
 	int id;
 	char descripcion[AAM_TAM_DESC];
-	eAaaaMmDd fechaPublicacion;
+	int fecha;
 	float precio;
 
 	int artista;
+	int discografica;
 	int pais;
-
 
 	int estado;
 }eAlbum;
@@ -59,7 +73,6 @@ typedef struct{
 	int id;
 	char descripcion[AAM_TAM_DESC];
 
-	int estado;
 }ePais;
 
 
@@ -72,70 +85,57 @@ typedef struct{
  * @param estadoBuscado estado buscado en el arreglo
  * @return posicion donde se consigio el estado, de lo contrario retorna -1
  */
-int buscaEstadoAlbum(eAlbum estructura[], int longitud, int estadoBuscado);
-
-/**
- * @brief carga forzada de datos
- *
- * @param estructura estructura a forzar
- * @param longitud longitud del arreglo
- * @param id
- * @return 1 en caso de exito, 0 de lo contrario
- */
-int hardCodeAlbum(eAlbum estructura[], int longitud, int id);
-
-/**
- * @brief carga forzada de datos
- *
- * @param estructura estructura a forzar
- * @param longitud longitud del arreglo
- * @param id
- * @return 1 en caso de exito, 0 de lo contrario
- */
-int hardCodeTipo(eTipoArtista estructura[], int longitud, int id);
-
+int eAlbum_buscarLugar(eAlbum estructura[], int longitud, int estadoBuscado);
 
 
 /**
- * @brief carga forzada de datos
+ * @brief retorna un id valido para discografia
  *
- * @param estructura estructura a forzar
- * @param longitud longitud del arreglo
- * @param id
- * @return 1 en caso de exito, 0 de lo contrario
+ * @param discografias lista de discografias
+ * @param len largo de la lista
+ * @return id validado
  */
-int hardCodeArtista(eArtista estructura[], int longitud, int id);
-
+int discograficaValidada(eDiscografica* discografias,int len);
 
 /**
- * @brief carga forzada de datos
+ * @brief retorna un id valido para paises
  *
- * @param estructura estructura a forzar
- * @param longitud longitud del arreglo
- * @param id
- * @return 1 en caso de exito, 0 de lo contrario
+ * @param paises lista de paises
+ * @param len largo de la lista
+ * @return id validado
  */
-int hardCodeDiscografia(eDiscografia estructura[], int longitud, int id);
+int paisValidado(ePais* paises, int len);
+
+/**
+ * @brief asigna datos a un album nuevo
+ *
+ * @param idAlbum id del proximo album
+ * @param descripcion titulo del album
+ * @param fecha fecha del album en formato aaaammdd
+ * @param precio precio del album
+ * @param discografia id del  discografica a la que pertenece el album
+ * @param pais id del  pais del album
+ * @param artista id del artista del album
+ * @return album con datos cargados
+ */
+eAlbum eAlbum_setData( int idAlbum, char* descripcion, int fecha, float precio, int discografia, int pais, int artista);
+
 
 
 
 /**
- * @brief carga forzada de datos
+ * @brief solicita al usuario datos para un album nuevo para la lista
  *
- * @param estructura estructura a forzar
- * @param longitud longitud del arreglo
- * @param id
- * @return 1 en caso de exito, 0 de lo contrario
+ * @param idAlbum id del proximo album
+ * @param discografias lista de discograficas
+ * @param len_discografias tamañolista de discograficas
+ * @param paises lista de paises
+ * @param len_paises tamaño lista de paises
+ * @param artistas lista de artistas
+ * @param len_artistas tamaño lista de artistas
+ * @return album con datos cargados
  */
-int hardCodePais(ePais estructura[], int longitud, int id);
-
-/**
- * @brief permite al usuario dar de alta un articulo
- *
- * @param id ID de la estructura
- * @return retorna la estructura rellenada
- */
-eAlbum alta(int id, ePais paises[], int lonPaises, eArtista artistas[], int lonArtistas);
+eAlbum eAlbum_nuevo(int idAlbum,eDiscografica* discografias,int len_discografias,ePais* paises,int len_paises,  eArtista* artistas, int len_artistas);
 
 /**
  * @brief busca una estructura dentro de un arreglo a travez de l numero id
@@ -143,59 +143,87 @@ eAlbum alta(int id, ePais paises[], int lonPaises, eArtista artistas[], int lonA
  * @param estructura arreglo de estructura
  * @param longitud longitud de la estructura
  * @param mensaje mensaje para informacion al usuario
- * @return retorna la posicion encotnrada en el arreglo
+ * @return retorna la posicion contrada en el arreglo
  */
-int buscaAlbumID(eAlbum estructura[], int longitud, char *mensaje);
+int eAlbum_idBuscar(eAlbum estructura[], int longitud, char *mensaje);
 
 /**
- * @brief muestra los datos de una estructura
+ * @brief calcula el promedio de precios de la lista de albumes
  *
- * @param unAlbum estructura a ser mostrada
+ * @param albumes lista de albumes
+ * @param longitud tamanio de la lista de albumes
+ * @return promedio de precios
  */
-void MostrarUnAlbum(eAlbum unAlbum);
+float eAlbum_promedioPrecios(eAlbum albumes[], int longitud);
+
+
+
+/**
+ * @brief muestra los datos de una estructura tipo album
+
+ * @param unAlbum album a mostrar
+ * @param artistas lista de artistas
+ * @param len_artistas tamaño lista de artistas
+ * @param paises lista de paises
+ * @param len_paises tamaño lista de paises
+ * @param discografias lista de discograficas
+ * @param len_discografias tamañolista de discograficas
+ */
+void eAlbum_mostrarUno(eAlbum unAlbum, eArtista* artistas, int len_artistas, ePais* paises, int len_paises, eDiscografica* discograficas, int len_discograficas );
+
+
+/**
+ * @brief recorre la lista de albumes verificando si debe mostrar su contenido
+
+ * @param albumes lista de albumes
+ * @param len_albumes tamaño lista de albumes
+ * @param artistas lista de artistas
+ * @param len_artistas tamaño lista de artistas
+ * @param paises lista de paises
+ * @param len_paises tamaño lista de paises
+ * @param discografias lista de discograficas
+ * @param len_discografias tamañolista de discograficas
+ */
+void eAlbum_mostrarVarios(eAlbum* albumes,int len_albumes, eArtista* artistas, int len_artistas, ePais* paises, int len_paises, eDiscografica* discograficas, int len_discograficas );
+
+/**
+ * @brief menu de opciones para modificar
+ *
+ * @return opcion del menu
+ */
+int menuDeModificaciones(void);
 
 /**
  * @brief modifica la estructura con indice del arreglo agregado
- *
- * @param estructura estructura a ser modificada
- * @param indice posicion de la estructura dentro del arreglo
+  *
+ * @param albumes lista de albumes
+ * @param indice posicion en la lista de albumes
+ * @param paises lista de paises
+ * @param len_paises tamaño de la lista de paises
  */
-void modificarUnAlbum(eAlbum estructura[], int indice, ePais paises[], int lonPaises);
+void eAlbum_modificar(eAlbum albumes[], int indice, ePais paises[], int len_paises);
 
 /**
- * @brief baja una estructura segun su numero de ID si esta habilitada
+ * @brief configura una estructura para darla de baja
  *
- * @param estructura estructura a ser modificada
- * @param longitud longitud del arreglo de estructuras
- * @return retorna 1 en caso de exito o 0 de lo contrario
+ * @param estructura album a ser eliminado
+ * @return retorna la estructura modificada
  */
-int bajaAlbumID(eAlbum estructura[], int longitud);
-
-/**
- * @brief regresa el total acumulado de precios de albumes
- *
- * @param albumes arreglo de albumes
- * @param longitud longitud de larreglo
- * @return total de precios
- */
-float totalPrecioAlbumes(eAlbum albumes[], int longitud);
-
-/**
- * @brief muestra las estructuras con estado=1 que estan en el arreglo
- *
- * @param arregloDeProductos nombre del arreglo
- * @param longitud longitud del arreglo
- */
-void mostrarVariosAlbumes(eAlbum arregloDeProductos[], int longitud);
+int eAlbum_bajaLogica(eAlbum* lista, int indice);
 
 /**
  * @brief muestra los albumes cuyo precio es menor que el numero indicado
  *
- * @param arregloDeProductos nombre del arreglo
- * @param longitud longitud del arreglo
- * @param precio precio a evaluar
+ * @param albumes lista de albumes
+ * @param len_albumes tamaño lista de albumes
+ * @param artistas lista de artistas
+ * @param len_artistas tamaño lista de artistas
+ * @param paises lista de paises
+ * @param len_paises tamaño lista de paises
+ * @param discografias lista de discograficas
+ * @param len_discografias tamañolista de discograficas
  */
-void mostrarAlbumMasBaratoQue(eAlbum arregloDeProductos[], int longitud, float precio);
+void eAlbum_mostrarVariosMasBaratoQue(float referencia, eAlbum* albumes,int len_albumes, eArtista* artistas, int len_artistas, ePais* paises, int len_paises, eDiscografica* discograficas, int len_discograficas );
 
 /**
  * @brief hace el informe solicitado en A
@@ -204,45 +232,52 @@ void mostrarAlbumMasBaratoQue(eAlbum arregloDeProductos[], int longitud, float p
  * @param longitud
  * @param contadorAlbumes
  */
-void informeA(eAlbum albumes[], int longitud, int contadorAlbumes);
+void informeA(eAlbum albumes[], int longitud);
 
 /**
- * @brief cuenta los albumes que salieron luego de 31/12/1999
+ * @brief hace el informe solicitado en B
  *
- * @param arregloDeProductos arreglo donde buscar datos
- * @param longitud longitud del arreglo
+ *
+ * @param arreglo lista de albumes
+ * @param longitud tamño de lista de albumes
  */
-void contarAlbumQueSalioLuegoDel2000(eAlbum arreglo[], int longitud);
+void informeB(eAlbum arreglo[], int longitud);
 
 /**
  * @brief muestra los albumes que salieron luego de 31/12/1999
- *
- * @param arregloDeProductos arreglo donde buscar datos
- * @param longitud longitud del arreglo
+
+ * @param albumes lista de albumes
+ * @param len_albumes tamaño lista de albumes
+ * @param artistas lista de artistas
+ * @param len_artistas tamaño lista de artistas
+ * @param paises lista de paises
+ * @param len_paises tamaño lista de paises
+ * @param discografias lista de discograficas
+ * @param len_discografias tamañolista de discograficas
  */
-void mostrarAlbumQueSalioLuegoDel2000(eAlbum arregloDeProductos[], int longitud);
+void eAlbum_mostrarVariosLuegoDel2000(eAlbum* albumes,int len_albumes, eArtista* artistas, int len_artistas, ePais* paises, int len_paises, eDiscografica* discograficas, int len_discograficas );
 
 /**
- * @brief muestra los datos de una estructura tipo eDiscografia
+ * @brief muestra los datos de una estructura tipo eDiscografica
  *
  * @param unaDiscografia estructura a mostrar
  */
-void mostrarUnaDiscografia(eDiscografia unaDiscografia);
+void eDiscografica_mostrarUna(eDiscografica unaDiscografia);
 
 /**
- * @brief muestra los datos de un arreglo de estructuras tipo eDiscografia
+ * @brief muestra los datos de un arreglo de estructuras tipo eDiscografica
  *
  * @param discografia arreglo a explorar
  * @param lonDiscografia longitud del arreglo
  */
-void mostrarVariasDiscografias(eDiscografia discografia[], int lonDiscografia);
+void eDiscografica_mostrarVarias(eDiscografica discografia[], int lonDiscografia);
 
 /**
  * @brief muestra los datos de una estructura tipo eTipoArtista
  *
  * @param unTipo estructura a mostrar
  */
-void mostrarUnTipoArtista(eTipoArtista unTipo);
+void eTipoArtista_mostrarUno(eTipoArtista unTipo);
 
 /**
  * @brief muestra los datos de un arreglo de estructuras tipo eTipoArtista
@@ -250,8 +285,14 @@ void mostrarUnTipoArtista(eTipoArtista unTipo);
  * @param arreglo arreglo a explorar
  * @param lonArtistas longitud del arreglo
  */
-void mostrarVariosTiposArtistas(eTipoArtista arreglo[], int lonArtistas);
+void eTipoArtista_mostrarVarios(eTipoArtista arreglo[], int lonArtistas);
 
+/**
+ * @brief muestra los datos de una estructura tipo ePais
+ *
+ * @param unPais estrcutura a mostrar
+ */
+void ePais_mostrarUno(ePais unPais);
 
 /**
  * @brief muestra los datos de un arreglo de estructuras tipo ePais
@@ -259,14 +300,14 @@ void mostrarVariosTiposArtistas(eTipoArtista arreglo[], int lonArtistas);
  * @param arreglo arreglo a explorar
  * @param lonPaises longitud del arreglo
  */
-void mostrarVariosPaises(ePais arreglo[], int lonPaises);
+void ePais_mostrarVarios(ePais arreglo[], int lonPaises);
 
 /**
  * @brief muestra los datos de una estructura tipo eArtista
  *
  * @param unArtista estructura a mostrar
  */
-void mostrarUnArtista(eArtista unArtista);
+void eArtista_mostrarUno(eArtista unArtista);
 
 /**
  * @brief muestra los datos de un arreglo de estructuras tipo eArtista
@@ -274,31 +315,37 @@ void mostrarUnArtista(eArtista unArtista);
  * @param arreglo arreglo a explorar
  * @param lonArtistas longitud del arreglo
  */
-void mostrarVariosArtistas(eArtista arreglo[], int lonArtistas);
+void eArtista_mostrarVarios(eArtista arreglo[], int lonArtistas);
 
 /**
  * @brief muestra los datos de una estructura tipo eAlbum con doble criterio segun precio y descripcion
- *
- * @param arreglo arreglo a explorar
- * @param longitud longitud del arreglo
+
+ * @param albumes lista de albumes
+ * @param len_albumes tamaño lista de albumes
+ * @param artistas lista de artistas
+ * @param len_artistas tamaño lista de artistas
+ * @param paises lista de paises
+ * @param len_paises tamaño lista de paises
+ * @param discografias lista de discograficas
+ * @param len_discografias tamañolista de discograficas
  */
-void mostrarVariosAlbumesPrecioDescripcion(eAlbum arreglo[], int longitud);
+void eAlbum_mostrarVariosPrecioDescripcion(eAlbum* albumes,int len_albumes, eArtista* artistas, int len_artistas, ePais* paises, int len_paises, eDiscografica* discograficas, int len_discograficas );
 
 /**
- * @brief muestra los datos de una estructura tipo eAlbum segun el nombre de su artista
+ * @brief muestra la lista de albumes ordenada por año de publicacion
  *
- * @param arreglo arreglo a explorar
- * @param longitud longitud del arreglo
+ * @param albumes lista de albumes
+ * @param len_albumes tamaño lista de albumes
+ * @param artistas lista de artistas
+ * @param len_artistas tamaño lista de artistas
+ * @param paises lista de paises
+ * @param len_paises tamaño lista de paises
+ * @param discografias lista de discograficas
+ * @param len_discografias tamañolista de discograficas
  */
-void mostrarVariosAlbumesPorArtista(eAlbum arreglo[], int longitud);
+void eAlbum_mostrarVariosPorAnio(eAlbum* albumes,int len_albumes, eArtista* artistas, int len_artistas, ePais* paises, int len_paises, eDiscografica* discograficas, int len_discograficas );
 
-/**
- * @brief muestra los datos de una estructura tipo eAlbum segun su año de publicacion
- *
- * @param arreglo arreglo a explorar
- * @param longitud longitud del arreglo
- */
-void mostrarVariosAlbumesPoranio(eAlbum arreglo[], int longitud);
+
 
 /**
  * @brief muestra los datos de una estructura tipo eAlbum segun su precio
@@ -309,23 +356,33 @@ void mostrarVariosAlbumesPoranio(eAlbum arreglo[], int longitud);
 void mostrarVariosAlbumesPrecio(eAlbum arreglo[], int longitud);
 
 /**
- * @brief muestra los datos de una estructura tipo eAlbum segun si su preci oesta por debaj odel promedio
+ * @brief muestra una lista de albumes cuyo precio no supera el precio promedio
  *
- * @param arreglo arreglo a explorar
- * @param longitud longitud del arreglo
- * @param contadorAlbumes contador de albumes
+ * @param albumes lista de albumes
+ * @param len_albumes tamaño lista de albumes
+ * @param artistas lista de artistas
+ * @param len_artistas tamaño lista de artistas
+ * @param paises lista de paises
+ * @param len_paises tamaño lista de paises
+ * @param discografias lista de discograficas
+ * @param len_discografias tamañolista de discograficas
  */
-void mostrarAlbumMasBaratoQuePromedio(eAlbum arreglo[], int longitud, int contadorAlbumes );
+void eAlbum_mostrarVariosMasBaratoQuePromedio(eAlbum* albumes,int len_albumes, eArtista* artistas, int len_artistas, ePais* paises, int len_paises, eDiscografica* discograficas, int len_discograficas );
 
 
 /**
  * @brief muestra los datos de una estructura tipo eAlbum segun si su pais no es argentina
- *
- * @param arreglo arreglo a explorar
- * @param longitud longitud del arreglo
- * @param contadorAlbumes contador de albumes
+
+ * @param albumes lista de albumes
+ * @param len_albumes tamaño lista de albumes
+ * @param artistas lista de artistas
+ * @param len_artistas tamaño lista de artistas
+ * @param paises lista de paises
+ * @param len_paises tamaño lista de paises
+ * @param discografias lista de discograficas
+ * @param len_discografias tamañolista de discograficas
  */
-void mostrarVariosAlbumesNoArg(eAlbum arreglo[], int longitud);
+void eAlbum_mostrarVariosNoArgentina(eAlbum* albumes,int len_albumes, eArtista* artistas, int len_artistas, ePais* paises, int len_paises, eDiscografica* discograficas, int len_discograficas );
 
 
 /**
@@ -337,6 +394,74 @@ void mostrarVariosAlbumesNoArg(eAlbum arreglo[], int longitud);
  */
 void mostrarVariosAlbumesArgAnio(eAlbum arreglo[], int longitud );
 
+
+/**
+ * @brief muestra la lista de artistas y retorna un valor de id valido
+ *
+ * @param lista lista de artistas
+ * @param len tamaño de la lista de artistas
+ * @return valor de id valido
+ */
+int artistaValidado(eArtista* lista, int len);
+
+
+
+/**
+ * @brief crea datos random para una estructura tipo eAlbum
+ *
+ * @param idAlbum
+ * @param discografias lista de discograficas
+ * @param len_discografias tamañolista de discograficas
+ * @param paises lista de paises
+ * @param len_paises tamaño lista de paises
+ * @param artistas lista de artistas
+ * @param len_artistas tamaño lista de artistas
+ * @return album con datos forzados
+ */
+eAlbum eAlbum_hardCode(int idAlbum,eDiscografica* discografias,int len_discografias,ePais* paises,int len_paises, eArtista* artistas, int len_artistas );
+
+/**
+ * @brief muestra la lista de albumes ordenada por artista
+ *
+ * @param albumes lista de albumes
+ * @param len_albumes tamaño lista de albumes
+ * @param artistas lista de artistas
+ * @param len_artistas tamaño lista de artistas
+ * @param paises lista de paises
+ * @param len_paises tamaño lista de paises
+ * @param discografias lista de discograficas
+ * @param len_discografias tamañolista de discograficas
+ */
+void eAlbum_mostrarVariosPorArtista(eAlbum* albumes,int len_albumes, eArtista* artistas, int len_artistas, ePais* paises, int len_paises, eDiscografica* discograficas, int len_discograficas );
+
+
+/**
+ * @brief muestra la lista  del top 3 de albumes ordenada por precio
+ *
+ * @param albumes lista de albumes
+ * @param len_albumes tamaño lista de albumes
+ * @param artistas lista de artistas
+ * @param len_artistas tamaño lista de artistas
+ * @param paises lista de paises
+ * @param len_paises tamaño lista de paises
+ * @param discografias lista de discograficas
+ * @param len_discografias tamañolista de discograficas
+ */
+void eAlbum_mostrarVariosPorPrecioTop(eAlbum* albumes,int len_albumes, eArtista* artistas, int len_artistas, ePais* paises, int len_paises, eDiscografica* discograficas, int len_discograficas );
+
+/**
+ * @brief muestra la lista de albumes argentinos de un año especifico
+ *
+ * @param albumes lista de albumes
+ * @param len_albumes tamaño lista de albumes
+ * @param artistas lista de artistas
+ * @param len_artistas tamaño lista de artistas
+ * @param paises lista de paises
+ * @param len_paises tamaño lista de paises
+ * @param discografias lista de discograficas
+ * @param len_discografias tamañolista de discograficas
+ */
+void eAlbum_mostrarVariosArgentinaAnio(eAlbum* albumes,int len_albumes, eArtista* artistas, int len_artistas, ePais* paises, int len_paises, eDiscografica* discograficas, int len_discograficas );
 
 
 #endif /* ALBUMESARTISTASMUSICALES_H_ */

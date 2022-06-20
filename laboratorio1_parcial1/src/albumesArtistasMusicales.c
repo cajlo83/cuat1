@@ -5,26 +5,20 @@
  *      Author: Cajlo
  */
 
-#include <time.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <math.h>
-#include <string.h>
-#include "personalio.h"
 #include "albumesArtistasMusicales.h"
 
 
-int buscaEstadoAlbum(eAlbum estructura[], int longitud, int estadoBuscado){
+int eAlbum_buscarLugar(eAlbum estructura[], int longitud, int estadoBuscado){
 
-	int i, retorno=-1;
+	int i;
+	int retorno= -1;
 
 
 	for( i=0; i<longitud; i++ ){
-		if( estructura[i].estado == estadoBuscado ){
+		if( igualQueEnteros(estructura[i].estado, estadoBuscado) ){
 			retorno=i;
 
-			break;
+			i=longitud;
 		}
 	}
 
@@ -32,342 +26,207 @@ int buscaEstadoAlbum(eAlbum estructura[], int longitud, int estadoBuscado){
 
 }
 
-int hardCodeAlbum(eAlbum estructura[], int longitud, int id){
+int discograficaValidada(eDiscografica* discografias,int len)
+{
+	int idAux, flag;
+
+	// se muestran las opciones
+	eDiscografica_mostrarVarias(discografias, len);
 
 
-	int indice;
-	int retorno=0;
 
-
-	indice= buscaEstadoAlbum( estructura, longitud, 0 );
-
-	if (indice!= -1)
+	do	// bucle de validacion
 	{
-		//se recibe el ID desde el main
-		estructura[indice].id= id;
 
-		//titulo del album
-		strcpy(estructura[indice].descripcion, "hardCode");
-
-		//precio del album
-		estructura[indice].precio= id+100;
-
-		//fecha
-
-		estructura[indice].fechaPublicacion.aaaa= id+2000;
-
-
-		estructura[indice].fechaPublicacion.mm= 1;
-
-
-		estructura[indice].fechaPublicacion.dd= 1;
-
-		//estado
-		estructura[indice].estado=1;
-
-		//retorno
-		retorno=1;
-	}
-
-	return retorno;
-}
-
-
-int buscaEstadoTipo(eTipoArtista estructura[], int longitud, int estadoBuscado){
-
-	int i, retorno=-1;
-
-
-	for( i=0; i<longitud; i++ ){
-		if( estructura[i].estado == estadoBuscado ){
-			retorno=i;
-
-			break;
-		}
-	}
-
-	return retorno;
-
-}
-
-int hardCodeTipo(eTipoArtista estructura[], int longitud, int id){
-
-
-	int indice;
-	int retorno=0;
-
-
-	indice= buscaEstadoTipo( estructura, longitud, 0 );
-
-	if (indice!= -1)
-	{
-		//se recibe el ID desde el main
-		estructura[indice].id= id;
-
-		//titulo del album
-		if(estructura[indice].id==1)
+		idAux= intScan("\nElija id de discografia: ");
+		if( !intVerify(idAux, 1, len) )
 		{
-			strcpy(estructura[indice].descripcion, "hardCode tipo 1");
-
+			printf("\n error, debe seleccionar una opcion entre 1 y %d |", len);
+			flag=1;
 		}
 		else
 		{
-			strcpy(estructura[indice].descripcion, "hardCode tipo 0");
+			flag=0;
 		}
 
 
-		//estado
-		estructura[indice].estado=1;
 
-		//retorno
-		retorno=1;
+	}while( flag );
 
-	}
-
-	return retorno;
-}
-
-
-int buscaEstadoDiscografia(eDiscografia estructura[], int longitud, int estadoBuscado){
-
-	int i, retorno=-1;
-
-
-	for( i=0; i<longitud; i++ ){
-		if( estructura[i].estado == estadoBuscado ){
-			retorno=i;
-
-			break;
-		}
-	}
-
-	return retorno;
+	// terminada la validacion, se retorna el dato
+	return idAux;
 
 }
 
-int hardCodeDiscografia(eDiscografia estructura[], int longitud, int id){
+int paisValidado(ePais* paises, int len)
+{
+	int idAux, flag;
+
+	// se muestran las opciones
+	ePais_mostrarVarios(paises, len);
 
 
-	int indice;
-	int retorno=0;
 
-
-	indice= buscaEstadoDiscografia( estructura, longitud, 0 );
-
-	if (indice!= -1)
+	do	// bucle de validacion
 	{
-		//se recibe el ID desde el main
-		estructura[indice].id= id;
 
-
-		strcpy(estructura[indice].descripcion, "hardCode discografia");
-
-		//estado
-		estructura[indice].estado=1;
-
-		//retorno
-		retorno=1;
-
-	}
-
-	return retorno;
-}
-
-
-int buscaEstadoArtista(eArtista estructura[], int longitud, int estadoBuscado){
-
-	int i, retorno=-1;
-
-
-	for( i=0; i<longitud; i++ ){
-		if( estructura[i].estado == estadoBuscado ){
-			retorno=i;
-
-			break;
-		}
-	}
-
-	return retorno;
-
-}
-
-int hardCodeArtista(eArtista estructura[], int longitud, int id){
-
-
-	int indice;
-	int retorno=0;
-
-
-	indice= buscaEstadoArtista( estructura, longitud, 0 );
-
-	if (indice!= -1)
-	{
-		//se recibe el ID desde el main
-		estructura[indice].id= id;
-
-		estructura[indice].tipo=randomInt(0, 1);
-
-		strcpy(estructura[indice].descripcion, "hardCode discografia");
-
-
-		//estado
-		estructura[indice].estado=1;
-
-		//retorno
-		retorno=1;
-
-	}
-
-	return retorno;
-}
-
-
-int buscaEstadoPais(ePais estructura[], int longitud, int estadoBuscado){
-
-	int i, retorno=-1;
-
-
-	for( i=0; i<longitud; i++ ){
-		if( estructura[i].estado == estadoBuscado ){
-			retorno=i;
-
-			break;
-		}
-	}
-
-	return retorno;
-
-}
-
-int hardCodePais(ePais estructura[], int longitud, int id){
-
-
-	int indice;
-	int retorno=0;
-
-
-	indice= buscaEstadoPais( estructura, longitud, 0 );
-
-	if (indice!= -1)
-	{
-		//se recibe el ID desde el main
-		estructura[indice].id= id;
-
-		strcpy(estructura[indice].descripcion, "hardCode PAIS");
-
-		if(id==ARGENTINA){
-			strcpy(estructura[indice].descripcion, "ARGENTINA");
-		}
-
-		//estado
-		estructura[indice].estado=1;
-
-		//retorno
-		retorno=1;
-
-	}
-
-	return retorno;
-}
-
-
-
-
-
-
-eAlbum alta(int id, ePais paises[], int lonPaises, eArtista artistas[], int lonArtistas){
-
-	eAlbum ticket;
-	int flag;
-
-	//se recibe el ID desde el main
-	ticket.id= id;
-
-	//titulo del album
-	stringScan( ticket.descripcion, AAM_TAM_DESC, "ingrese titulo del album: ");
-
-	//precio del album
-	flag=0;
-	do
-	{
-		if( flag!=0 )
+		idAux= intScan("\nElija id de pais: ");
+		if( !intVerify(idAux, 1, len) )
 		{
-			printf("\n error, precio debe ser mayor que 0. ");
-		}
-		ticket.precio= floatScan("precio: ");
-
-		flag=1;
-
-	}while( !floatVerify(ticket.precio, 1, 0) );
-
-
-
-	//artista
-	mostrarVariosArtistas(artistas, lonArtistas);
-	ticket.artista=intScan("\ningrese codigo de artista");
-
-	//pais
-	mostrarVariosPaises(paises,  lonPaises);
-	ticket.artista=intScan("\ningrese codigo de pais");
-
-
-	printf("\nDatos de fecha de publicacion");
-
-	//año
-	flag=0;
-	do
-		{
-			if( flag!=0 )
-			{
-				printf("\n error, año debe ser mayor que 1970. ");
-			}
-			ticket.fechaPublicacion.aaaa= intScan("ingrese año (AAAA): ");
-
+			printf("\n error, debe seleccionar una opcion entre 1 y %d |", len);
 			flag=1;
-
-		}while( mayorQue(ticket.fechaPublicacion.aaaa, 1970 ) );
-
-	//mes
-	flag=0;
-	do
+		}
+		else
 		{
-			if( flag!=0 )
-			{
-				printf("\n error, mes debe ser un numero entre 1 y 12. ");
-			}
-			ticket.fechaPublicacion.mm= intScan("ingrese mes (MM): ");
-
-			flag=1;
-
-		}while( intVerify(ticket.fechaPublicacion.mm, 1, 12) );
-
-	//dia
-	flag=0;
-	do
-		{
-			if( flag!=0 )
-			{
-				printf("\n error, dia debe ser un numero entre 1 y 31. ");
-			}
-			ticket.fechaPublicacion.dd= intScan("ingrese dia (DD): ");
-
-			flag=1;
-
-		}while( intVerify(ticket.fechaPublicacion.dd, 1, 31) );
+			flag=0;
+		}
 
 
-	return ticket;
+	}while( flag );
+
+	// terminada la validacion, se retorna el dato
+	return idAux;
+
 }
 
+int artistaValidado(eArtista* lista, int len)
+{
+	int idAux, flag;
 
-int buscaAlbumID(eAlbum estructura[], int longitud, char *mensaje){
+	// se muestran las opciones
+	eArtista_mostrarVarios(lista, len);
+
+
+
+	do	// bucle de validacion
+	{
+
+		idAux= intScan("\nElija id de artista: ");
+
+		flag= intVerify(idAux, 1, len);
+		if( !flag )
+		{
+			printf("\n error, debe seleccionar una opcion entre 1 y %d |", len);
+		}
+
+	}while( !flag );
+
+	// terminada la validacion, se retorna el dato
+	return idAux;
+
+}
+
+eAlbum eAlbum_setData( int idAlbum, char* descripcion, int fecha, float precio, int discografia, int pais, int artista)
+{
+	eAlbum albumAux;
+
+	// set id
+	albumAux.id= idAlbum;
+
+	// set descripcion
+	strcpy(albumAux.descripcion, descripcion );
+
+	// set fecha
+	albumAux.fecha= fecha;
+
+	// set precio
+	albumAux.precio= precio;
+
+	// set discografia
+	albumAux.discografica= discografia;
+
+	// set pais
+	albumAux.pais= pais;
+
+	// set artista
+	albumAux.artista= artista;
+
+	// set estado
+	albumAux.estado= ESTADO_OCUPADO;
+
+	return albumAux;
+}
+
+eAlbum eAlbum_nuevo(int idAlbum,eDiscografica* discografias,int len_discografias,ePais* paises,int len_paises, eArtista* artistas, int len_artistas)
+{
+	eAlbum albumAux;
+	char descripcion[AAM_TAM_DESC];
+	int fecha, discografia, pais, artista;
+	float precio;
+
+	// titulo del album
+	stringScan(descripcion , AAM_TAM_DESC, "Ingrese el titulo del album: ");
+
+	// lectura de la fecha
+	fecha= fechaValidadaAAAAMMDD(FECHA_MIN, FECHA_MAX);
+
+	//lectura del precio
+	precio= precioValidado(0.01);
+
+	// lectura de discografia
+	printf("\nElija una discografica para nuevo album:");
+	discografia= discograficaValidada(discografias, len_discografias);
+
+	// lectura de pais
+	printf("\nElija el pais de origen para nuevo album:");
+	pais= paisValidado(paises, len_paises);
+
+	// lectura del artista
+	printf("\nElija el artista para nuevo album:");
+	artista= artistaValidado(artistas, len_artistas);
+
+
+
+	albumAux= eAlbum_setData( idAlbum, descripcion, fecha, precio, discografia, pais, artista);
+
+	return albumAux;
+}
+
+eAlbum eAlbum_hardCode(int idAlbum,eDiscografica* discografias,int len_discografias,ePais* paises,int len_paises, eArtista* artistas, int len_artistas )
+{
+	eAlbum albumAux;
+	char descripcion[AAM_TAM_DESC];
+	int fecha, discografia, pais, artista;
+	float precio;
+
+
+
+
+	// titulo del album
+	randomString( descripcion, AAM_TAM_DESC);
+	stringNameFormat(descripcion, AAM_TAM_DESC);
+
+	// fecha
+	fecha= randomInt(1, 30) + FECHA_MAX;
+
+	// precio
+	precio= randomInt(1, 1000)*1.141592;
+
+	// discografia
+	discografia= randomInt(1, len_discografias);
+
+	// pais
+	pais= randomInt(1, len_paises);
+
+	// artista
+	artista= randomInt(1, len_artistas);
+
+
+
+	// se agregan datos random al auxiliar a retornoar
+	albumAux= eAlbum_setData( idAlbum, descripcion, fecha, precio, discografia, pais, artista);
+
+	return albumAux;
+}
+
+int eAlbum_idBuscar(eAlbum estructura[], int longitud, char *mensaje){
 
 	int idBuscada, i, retorno=-1;
 
 	idBuscada=intScan( mensaje );
 
 	for( i=0; i<longitud; i++ ){
-		if( estructura[i].id == idBuscada ){
+		if( estructura[i].id == idBuscada && estructura[i].estado == ESTADO_OCUPADO ){
 			retorno=i;
 
 			break;
@@ -378,404 +237,488 @@ int buscaAlbumID(eAlbum estructura[], int longitud, char *mensaje){
 
 }
 
-
-void MostrarUnAlbum(eAlbum unAlbum){
-
-
-
-	printf("\nidAlbum: %d \tdescripcion: %s \tprecio: $ %.2f", unAlbum.id, unAlbum.descripcion, unAlbum.precio);
-
-}
-
-
-void modificarUnAlbum(eAlbum estructura[], int indice, ePais paises[], int lonPaises){
-
-	int flag, opcion;
-
-	do{
-		printf("\nha seleccionado la estructura:\n");
-		MostrarUnAlbum( estructura[indice] );
-
-
-		printf("\nque desea modificar?");
-		opcion = intScan( "\n\nMENU\n1. Titulo\n2. Fecha de publicacion \n3. Importe \n4. pais \n\n\t5. Salir" );
-
-
-		switch( opcion ){
-
-		case 1:
-			stringScan( estructura[indice].descripcion, AAM_TAM_DESC, "ingrese titulo del album: ");
-			break;
-
-		case 2:
-
-			//año
-			flag=0;
-			do
-				{
-					if( flag!=0 )
-					{
-						printf("\n error, año debe ser mayor que 1970. ");
-					}
-					estructura[indice].fechaPublicacion.aaaa= intScan("ingrese año (AAAA): ");
-
-					flag=1;
-
-				}while( mayorQue(estructura[indice].fechaPublicacion.aaaa, 1970 ) );
-
-			//mes
-			flag=0;
-			do
-				{
-					if( flag!=0 )
-					{
-						printf("\n error, mes debe ser un numero entre 1 y 12. ");
-					}
-					estructura[indice].fechaPublicacion.mm= intScan("ingrese mes (MM): ");
-
-					flag=1;
-
-				}while( intVerify(estructura[indice].fechaPublicacion.mm, 1, 12) );
-
-			//dia
-			flag=0;
-			do
-				{
-					if( flag!=0 )
-					{
-						printf("\n error, dia debe ser un numero entre 1 y 31. ");
-					}
-					estructura[indice].fechaPublicacion.dd= intScan("ingrese dia (DD): ");
-
-					flag=1;
-
-				}while( intVerify(estructura[indice].fechaPublicacion.dd, 1, 31) );
-
-
-			break;
-
-		case 3:
-
-			//precio del album
-			flag=0;
-			do
-			{
-				if( flag!=0 )
-				{
-					printf("\n error, precio debe ser mayor que 0. ");
-				}
-				estructura[indice].precio= floatScan("precio: ");
-
-				flag=1;
-
-			}while( !floatVerify(estructura[indice].precio, 1, 0) );
-
-			break;
-
-
-			//pais
-		case 4:
-
-				mostrarVariosPaises(paises, lonPaises);
-				estructura[indice].artista=intScan("\ningrese codigo de pais");
-			break;
-
-
-			//salida
-		case 5:
-			printf("Saliendo de modificar...");
-			break;
-
-		default:
-				printf("La opcion ingresada es incorrecta..");
-
-		}
-	}while( opcion!=5 );
-
-}
-
-
-
-int bajaAlbumID(eAlbum estructura[], int longitud){
-	int indice;
-	int retorno=0;
-
-
-	indice=buscaAlbumID(estructura, longitud, "\nIngrese el numero de ID del album a dar de baja_ ");
-
-	if ( indice==-1 ){
-		printf("\nEl ID solicitado no existe.");
-	}
-	else if( estructura[indice].estado==-1 ){
-		printf("\nEl ID solicitado ya fue dado de baja con anterioridad.");
-
-	}
-	else if( estructura[indice].estado==1 ){
-
-		estructura[indice].estado=-1;
-		printf("\nEl ID solicitado acaba de ser dado de baja.");
-		retorno=1;
-
-	}
-
-	return retorno;
-}
-
-
-float totalPrecioAlbumes(eAlbum albumes[], int longitud){
+void eAlbum_mostrarUno(eAlbum unAlbum, eArtista* artistas, int len_artistas, ePais* paises, int len_paises, eDiscografica* discograficas, int len_discograficas )
+{
 
 	int i;
+
+	printf("idAlbum: %d |\tdescripcion: %s |\tFecha: %d |\tprecio: $ %.2f", unAlbum.id, unAlbum.descripcion,unAlbum.fecha, unAlbum.precio);
+
+
+
+
+
+	// mostrar datos del pais
+	for(i=0; i<len_paises;i++)
+	{
+		if( igualQueEnteros(unAlbum.pais, paises[i].id) )
+		{
+			printf(" |\tPais: %s", paises[i].descripcion);
+		}
+	}
+
+
+
+
+
+	// mostrar datos de discografica
+	for(i=0; i<len_discograficas;i++)
+	{
+		if( igualQueEnteros(unAlbum.discografica, discograficas[i].id) )
+		{
+			printf(" |\tDiscografica: %s", discograficas[i].descripcion);
+		}
+	}
+
+
+
+
+
+	// mostrar datos del artista
+	for(i=0; i<len_artistas;i++)
+	{
+		if( igualQueEnteros(unAlbum.artista, artistas[i].id) )
+		{
+			printf(" |\tArtista: %s", artistas[i].descripcion);
+		}
+	}
+
+
+
+
+
+
+}
+
+void eAlbum_mostrarVarios(eAlbum* albumes,int len_albumes, eArtista* artistas, int len_artistas, ePais* paises, int len_paises, eDiscografica* discograficas, int len_discograficas )
+{
+
+	int i;
+
+	// recorre todas las posiciones de la lista
+	for(i=0; i<len_albumes;i++)
+	{
+		if( igualQueEnteros(albumes[i].estado, ESTADO_OCUPADO) )
+		{
+			// se verifica que el estado del album sea ocupado para decidier imprimirlo
+			printf("\n");
+			eAlbum_mostrarUno(albumes[i], artistas, len_artistas, paises, len_paises, discograficas, len_discograficas);
+
+		}
+	}
+
+
+}
+
+void eAlbum_mostrarVariosLuegoDel2000(eAlbum* albumes,int len_albumes, eArtista* artistas, int len_artistas, ePais* paises, int len_paises, eDiscografica* discograficas, int len_discograficas )
+{
+
+	int i, fecha, aux;
+
+
+	for( i=0; i<len_albumes; i++ )
+	{
+
+
+
+		if( igualQueEnteros(albumes[i].estado, ESTADO_OCUPADO)  )
+		{
+
+			fecha=albumes[i].fecha;	// formato aaaammdd
+			aux= fecha/10000; // formato aaaa
+			if( mayorQueEnteros(aux, 1999) )
+			{
+				printf("\n");
+				eAlbum_mostrarUno(albumes[i], artistas, len_artistas, paises, len_paises, discograficas, len_discograficas);
+			}
+
+
+
+		}
+	}
+
+
+}
+
+int menuDeModificaciones(void)
+{
+	int flag= 0;
+	int option;
+
+	// DESPLIEGUE DE OPCIONES
+	printf("\n\nMODIFICAR");
+	printf("\n1. Titulo");
+	printf("\n2. Fecha");
+	printf("\n3. Precio");
+	printf("\n4. Pais");
+	printf("\n\t5. Salir");
+
+	printf("\n");
+	do
+	{
+
+		option= intScan( "Seleccione una opcion: " );
+
+		flag= intVerify(option, 1, 5);
+		if( !flag )
+		{
+			printf("\nNo ingreso una opcion valida. ");
+		}
+
+
+
+	}while( !flag );
+
+
+	return option;
+}
+
+void eAlbum_modificar(eAlbum albumes[], int indice, ePais paises[], int len_paises)
+{
+
+	int opcion;
+	{
+			do
+			{
+				opcion= menuDeModificaciones();
+				switch(opcion)
+				{
+
+				case 1:// Modificacion titulo del album
+					printf("\nModificacion de titulo:\n");
+					stringScan(albumes[indice].descripcion , AAM_TAM_DESC, "Ingrese el nuevo titulo del album:");
+					break;
+
+
+				case 2:// Modificacion fecha
+					printf("\nModificacion de fecha, ingrese un valor entre %d y %d", FECHA_MIN, FECHA_MAX);
+					albumes[indice].fecha= fechaValidadaAAAAMMDD(FECHA_MIN, FECHA_MAX);
+					break;
+
+
+				case 3:// Modificacion del precio
+					printf("\nModificacion de precio:");
+					albumes[indice].precio= precioValidado(0.01);
+					break;
+
+
+				case 4:// Modificacion de pais
+					printf("\nElija el nuevo pais de origen para nuevo album:");
+					albumes[indice].pais= paisValidado(paises, len_paises);
+					break;
+
+				}
+
+
+			}while( opcion!=5 );
+
+
+			printf("\nSaliendo de modificaciones...");
+
+		}
+
+}
+
+int eAlbum_bajaLogica(eAlbum* lista, int indice)
+{
+	 int flag;
+	 printf("\n");
+
+	 flag=intScan("Seguro desea eliminar el album seleccionado? ingrese 0 para cancelar_ ");
+	 if( flag )
+	 {
+		 lista[indice].estado= ESTADO_ELIMINADO;
+		printf("\nEl ID solicitado acaba de ser dado de baja.");
+
+	 }
+
+
+	return flag;
+}
+
+float eAlbum_promedioPrecios(eAlbum albumes[], int longitud)
+{
+
+	int i;
+	int contador=0;
+
+	float promedio;
 	float total=0;
 
 	for( i=0; i<longitud; i++ )
 	{
-		//se determina los datos a usar segun su estado
-		if( albumes[i].estado==1 )
+		//se determina los datos a usar segun el estado del album
+		if( albumes[i].estado==ESTADO_OCUPADO )
 		{
 			total+= albumes[i].precio;
+			contador++;
 
 		}
 
 
 	}
 
+	promedio= total/contador;
 
-	return total;
+
+	return promedio;
 }
 
-void mostrarVariosAlbumes(eAlbum arreglo[], int longitud){
+void eAlbum_mostrarVariosNoArgentina(eAlbum* albumes,int len_albumes, eArtista* artistas, int len_artistas, ePais* paises, int len_paises, eDiscografica* discograficas, int len_discograficas )
+{
 
 	int i;
 
-	for( i=0; i<longitud; i++ ){
-		if( arreglo[i].estado == 1 ){
-			MostrarUnAlbum( arreglo[i] );
-		}
-	}
-
-}
-
-
-void mostrarVariosAlbumesNoArg(eAlbum arreglo[], int longitud){
-
-	int i;
-
-	for( i=0; i<longitud; i++ ){
-		if( arreglo[i].estado == 1 && arreglo[i].pais!=ARGENTINA){
-			MostrarUnAlbum( arreglo[i] );
-		}
-	}
-
-}
-
-
-void mostrarVariosAlbumesArgAnio(eAlbum arreglo[], int longitud ){
-
-	int i;
-	int anio;
-
-	anio=intScan("\n ingrese el año que busca");
-
-	for( i=0; i<longitud; i++ ){
-		if( arreglo[i].estado == 1 && arreglo[i].pais!=ARGENTINA && arreglo[i].fechaPublicacion.aaaa==anio){
-			MostrarUnAlbum( arreglo[i] );
-		}
-	}
-
-}
-
-
-void mostrarAlbumMasBaratoQue(eAlbum arreglo[], int longitud, float precio){
-
-	int i;
-
-
-	for( i=0; i<longitud; i++ )
+	for( i=0; i<len_albumes; i++ )
 	{
-		if( arreglo[i].estado==1  && mayorQue( precio, arreglo[i].precio ) )
+		if( igualQueEnteros(albumes[i].estado, ESTADO_OCUPADO) && !igualQueEnteros(albumes[i].pais, ARGENTINA) )
 		{
-			MostrarUnAlbum( arreglo[i] );
+
+			printf("\n");
+			eAlbum_mostrarUno(albumes[i], artistas, len_artistas, paises, len_paises, discograficas, len_discograficas);
+		}
+	}
+
+}
+
+void eAlbum_mostrarVariosArgentinaAnio(eAlbum* albumes,int len_albumes, eArtista* artistas, int len_artistas, ePais* paises, int len_paises, eDiscografica* discograficas, int len_discograficas )
+{
+
+	int i, anioScan, anioMin, anioMax, anio, flag;
+
+
+
+	// se establecen los años minimo y maximo
+
+	/*
+	 * [formato aaaammdd] / 10000 = [formato aaaa]
+	 */
+	anioMin= FECHA_MIN/10000;
+	anioMax= FECHA_MAX/10000;
+
+
+	// se solicita al usuario que año quiere ver
+	do
+	{
+
+		anioScan= intScan("Elija de cual anio quiere ver albumes argentinos");
+
+		flag= intVerify(anioScan, anioMin, anioMax);
+		if (!flag)
+		{
+			printf("\nNo ingreso un anio valido. ");
+		}
+
+
+
+	}while(!flag);
+
+
+
+
+	// se recorren los albumes buscando cuales estan activos y son argentinos
+	for( i=0; i<len_albumes; i++ )
+	{
+		if( igualQueEnteros(albumes[i].estado, ESTADO_OCUPADO) && igualQueEnteros(albumes[i].pais, ARGENTINA) )
+		{
+
+			// en caso de encontrarse un album argentino, se verifica su fecha
+			anio= albumes[i].fecha / 10000;		// 			[formato aaaammdd] / 10000 = [formato aaaa]
+
+			if( igualQueEnteros(anio, anioScan) )
+			{
+				printf("\n");
+				eAlbum_mostrarUno(albumes[i], artistas, len_artistas, paises, len_paises, discograficas, len_discograficas);
+
+			}
+		}
+	}
+
+}
+
+void eAlbum_mostrarVariosMasBaratoQue(float referencia, eAlbum* albumes,int len_albumes, eArtista* artistas, int len_artistas, ePais* paises, int len_paises, eDiscografica* discograficas, int len_discograficas )
+{
+
+	int i;
+
+
+	for( i=0; i<len_albumes; i++ )
+	{
+		if( igualQueEnteros(albumes[i].estado, ESTADO_OCUPADO) && mayorQueReales(referencia, albumes[i].precio) )
+		{
+			printf("\n");
+			eAlbum_mostrarUno(albumes[i], artistas, len_artistas, paises, len_paises, discograficas, len_discograficas);
+
 		}
 	}
 
 
 }
 
+void eAlbum_mostrarVariosMasBaratoQuePromedio(eAlbum* albumes,int len_albumes, eArtista* artistas, int len_artistas, ePais* paises, int len_paises, eDiscografica* discograficas, int len_discograficas )
+{
 
-void mostrarAlbumMasBaratoQuePromedio(eAlbum arreglo[], int longitud, int contadorAlbumes ){
-	//A. Total y promedio de los importes, y cuántos álbumes no superan ese promedio.
-	float total;
 	float promedio;
 
-	total= totalPrecioAlbumes( arreglo, longitud );
-
-	promedio= basicMath(total, contadorAlbumes, '/');
-
-	printf("\nAl momento se tienen %d albumes en existencia y un precio promedio de $%.2f", contadorAlbumes, promedio);
-
-	printf("\nLos albumes por debajo de ese precio son: ");
 
 
-	mostrarAlbumMasBaratoQue(arreglo,  longitud,  promedio);
+
+	promedio= eAlbum_promedioPrecios(albumes, len_albumes);
+
+	printf("\nPromedio: %.2f", promedio);
+
+
+	eAlbum_mostrarVariosMasBaratoQue(promedio, albumes, len_albumes, artistas, len_artistas, paises, len_paises, discograficas, len_discograficas);
 
 }
 
-
-void contarAlbumQueSalioLuegoDel2000(eAlbum arreglo[], int longitud){
-
-	int i;
+void informeB(eAlbum arreglo[], int longitud)
+{
+// Cantidad de álbumes cuya fecha de publicación es posterior a 31/12/1999
+	int i, fechaAux;
 	int contador=0;
 
 
 	for( i=0; i<longitud; i++ )
 	{
 
-
-
-
-		if( arreglo[i].estado==1  && mayorQue( arreglo[i].fechaPublicacion.aaaa, 1999 ) )
+		// descomposision de la fecha: aaaammdd/10000=aaaa
+		fechaAux= arreglo[i].fecha;
+		fechaAux= fechaAux/10000;
+		if( igualQueEnteros(arreglo[i].estado, ESTADO_OCUPADO) && mayorQueEnteros(fechaAux, 1999) )
 		{
 
 			contador ++;
 		}
 	}
 
-	printf("\nHan salido %d albumes luego de 31/12/1999", contador);
+	printf("\nHan salido %d albumes luego de 19991231", contador);
 
 }
 
-
-void mostrarAlbumQueSalioLuegoDel2000(eAlbum arreglo[], int longitud){
-
-	int i;
-
-
-	for( i=0; i<longitud; i++ )
-	{
-
-
-
-
-		if( arreglo[i].estado==1  && mayorQue( arreglo[i].fechaPublicacion.aaaa, 1999 ) )
-		{
-
-			MostrarUnAlbum( arreglo[i] );
-
-		}
-	}
-
-
-}
-
-
-void informeA(eAlbum albumes[], int longitud, int contadorAlbumes){
+void informeA(eAlbum albumes[], int longitud)
+{
 	//A. Total y promedio de los importes, y cuántos álbumes no superan ese promedio.
-	float total;
+	int i;
+	int contador= 0;
+	float total= 0;
 	float promedio;
 
-	total= totalPrecioAlbumes( albumes, longitud );
 
-	promedio= basicMath(total, contadorAlbumes, '/');
 
-	printf("\nAl momento se tienen %d albumes en existencia y un precio promedio de $%.2f", contadorAlbumes, promedio);
+	// se calcula promedio de precios
+	promedio= eAlbum_promedioPrecios(albumes, longitud);
+
+
+
+	// se recurre la lista denuevo comparando datos
+	for(i=0; i<longitud;i++)
+	{
+		if( igualQueEnteros(albumes[i].estado, ESTADO_OCUPADO) )
+		{
+
+			// se suman datos de total de precios
+			total+= albumes[i].precio;
+
+			// se verifica si debe contarse a los objetivos de la funcion
+			if(!mayorQueReales(albumes[i].precio, promedio) )
+			{
+				contador++;
+			}
+		}
+
+	}
+
+
+	printf("\nTotal de importes: %.2f |\tPromedio de importes: %.2f |\tALbumes que no superan el promedio: %d", total, promedio, contador);
+
 
 }
 
-
-void mostrarUnaDiscografia(eDiscografia unaDiscografia){
-
+void eDiscografica_mostrarUna(eDiscografica unaDiscografia){
 
 
-	printf("\nidDiscografiam: %d \tdescripcion: %s", unaDiscografia.id, unaDiscografia.descripcion);
+
+	printf("di_discografia: %d \t|descripcion_discografia: %s", unaDiscografia.id, unaDiscografia.descripcion);
 
 }
 
-
-void mostrarVariasDiscografias(eDiscografia arreglo[], int lonDiscografia){
+void eDiscografica_mostrarVarias(eDiscografica arreglo[], int lonDiscografia){
 
 	int i;
 
-	for( i=0; i<lonDiscografia; i++ ){
+	for( i=0; i<lonDiscografia; i++ )
+	{
+		printf("\n");
+		eDiscografica_mostrarUna( arreglo[i] );
+	}
 
-		if( arreglo[i].estado==1 )
-		mostrarUnaDiscografia( arreglo[i] );
+}
+
+void eTipoArtista_mostrarUno(eTipoArtista unTipo){
+
+
+
+	printf("idTipo: %d \tdescripcion: %s", unTipo.id, unTipo.descripcion);
+
+}
+
+void eTipoArtista_mostrarVarios(eTipoArtista arreglo[], int lonTipoArtistas){
+
+	int i;
+
+	for( i=0; i<lonTipoArtistas; i++ )
+	{
+		printf("\n");
+		eTipoArtista_mostrarUno( arreglo[i] );
 
 	}
 
 }
 
-
-void mostrarUnTipoArtista(eTipoArtista unTipo){
-
+void eArtista_mostrarUno(eArtista unArtista){
 
 
-	printf("\nidTipo: %d \tdescripcion: %s", unTipo.id, unTipo.descripcion);
+
+	printf("idArtista: %d \tdescripcion: %s", unArtista.id, unArtista.descripcion);
 
 }
 
-
-void mostrarVariosTiposArtistas(eTipoArtista arreglo[], int lonTipoArtistas){
+void eArtista_mostrarVarios(eArtista arreglo[], int lonArtistas)
+{
 
 	int i;
 
-	for( i=0; i<lonTipoArtistas; i++ ){
+	for( i=0; i<lonArtistas; i++ )
+	{
+		printf("\n");
+		eArtista_mostrarUno( arreglo[i] );
+	}
+}
 
-		if( arreglo[i].estado==1 )
-		mostrarUnTipoArtista( arreglo[i] );
+void ePais_mostrarUno(ePais unPais){
+
+
+
+	printf("idPais: %d \tdescripcion: %s", unPais.id, unPais.descripcion);
+
+}
+
+void ePais_mostrarVarios(ePais arreglo[], int lonPaises){
+
+	int i;
+
+	for( i=0; i<lonPaises; i++ )
+	{
+		printf("\n");
+		ePais_mostrarUno( arreglo[i] );
 
 	}
 
 }
 
-
-
-void mostrarUnArtista(eArtista unArtista){
-
-
-
-	printf("\nidArtista: %d \tdescripcion: %s", unArtista.id, unArtista.descripcion);
-
-}
-
-
-void mostrarVariosArtistas(eArtista arreglo[], int lonArtistas){
-
-	int i;
-
-	for( i=0; i<lonArtistas; i++ ){
-
-		if( arreglo[i].estado==1 )
-		mostrarUnArtista( arreglo[i] );
-
-	}
-
-}
-
-
-void mostrarUnPais(ePais unPais){
-
-
-
-	printf("\nidPais: %d \tdescripcion: %s", unPais.id, unPais.descripcion);
-
-}
-
-
-void mostrarVariosPaises(ePais arreglo[], int lonPaises){
-
-	int i;
-
-	for( i=0; i<lonPaises; i++ ){
-
-		if( arreglo[i].estado==1 )
-			mostrarUnPais( arreglo[i] );
-
-	}
-
-}
-
-
-void mostrarVariosAlbumesPrecioDescripcion(eAlbum arreglo[], int longitud){
+void eAlbum_mostrarVariosPrecioDescripcion(eAlbum* albumes,int len_albumes, eArtista* artistas, int len_artistas, ePais* paises, int len_paises, eDiscografica* discograficas, int len_discograficas )
+{
 
 	//E. Realizar un solo listado de los álbumes ordenados por los siguientes criterios:
 	//o Importe (descendentemente)
@@ -786,171 +729,164 @@ void mostrarVariosAlbumesPrecioDescripcion(eAlbum arreglo[], int longitud){
 	int comparacion;
 	eAlbum eAux;
 
-	//se crea un clon de la estructura original para que la original no se desordene por los parametros de referencia
-	eAlbum copia[longitud];
-	for (i=0;i<longitud;i++)
-	{
-		copia[i]=arreglo[i];
-	}
 
 
-	for( i=0; i<longitud; i++ )
+	for( i=0; i<len_albumes; i++ )
 	{
-		for(j=i+1;j<longitud;j++)
+		if( igualQueEnteros(albumes[i].estado, ESTADO_OCUPADO) )
 		{
-			//reorganiza el clon segun el valor guardado en *.precio
-			if( copia[i].precio<copia[j].precio )
+			// inicia un segundo recorrido en caso de que la posicion i este ocupada
+			for(j=i+1;j<len_albumes;j++)
 			{
-				eAux=copia[i];
-				copia[i]=copia[j];
-				copia[j]=eAux;
+				// reorganiza la lista segun los valores de precio y estado de posicion J
 
 
-			}
-			//revisa la posibilidad de que los precios sean iguales
-			else if( copia[i].precio==copia[j].precio )
-			{
-
-				comparacion=strcmp(copia[i].descripcion, copia[j].descripcion);
-				//si descripcionI>descripcionJ, entonces cambiar
-				if( mayorQue(comparacion, 0) )
+																			//si precioI>precioJ: cambiar
+				if( igualQueEnteros(albumes[j].estado, ESTADO_OCUPADO) && mayorQueEnteros(albumes[i].precio, albumes[j].precio) )
 				{
-					eAux=copia[i];
-					copia[i]=copia[j];
-					copia[j]=eAux;
+					eAux=albumes[i];
+					albumes[i]=albumes[j];
+					albumes[j]=eAux;
 
+
+				}
+				//revisa la posibilidad de que los precios sean iguales
+				else if( igualQueEnteros(albumes[j].estado, ESTADO_OCUPADO) && igualQueEnteros(albumes[i].precio, albumes[j].precio) )
+				{
+
+					comparacion=strcmp(albumes[i].descripcion, albumes[j].descripcion);
+					//si descripcionJ>descripcionI: cambiar
+					if( igualQueEnteros( comparacion, 0) )
+					{
+						eAux=albumes[i];
+						albumes[i]=albumes[j];
+						albumes[j]=eAux;
+
+					}
 				}
 			}
 		}
 	}
 
-	mostrarVariosAlbumes( copia, longitud);
+	eAlbum_mostrarVarios(albumes, len_albumes, artistas, len_artistas, paises, len_paises, discograficas, len_discograficas);
 
 
 }
 
-
-void mostrarVariosAlbumesPrecio(eAlbum arreglo[], int longitud){
+void eAlbum_mostrarVariosPorPrecioTop(eAlbum* albumes,int len_albumes, eArtista* artistas, int len_artistas, ePais* paises, int len_paises, eDiscografica* discograficas, int len_discograficas )
+{
 
 
 	int i, j;
 	eAlbum eAux;
 
-	//se crea un clon de la estructura original para que la original no se desordene por los parametros de referencia
-	eAlbum copia[longitud];
-	for (i=0;i<longitud;i++)
-	{
-		copia[i]=arreglo[i];
-	}
 
-
-	for( i=0; i<longitud; i++ )
+	// doble bucle de ordenamiento segun el precio
+	for( i=0; i<len_albumes; i++ )
 	{
-		for(j=i+1;j<longitud;j++)
+
+		// el segundo bucle se activa solo si la posicion I esta en estado ocupado
+		if( igualQueEnteros(albumes[i].estado, ESTADO_OCUPADO) )
 		{
-			//reorganiza el clon segun el valor guardado en *.precio
-			if( copia[i].precio<copia[j].precio )
+			for(j=i+1;j<len_albumes;j++)
 			{
-				eAux=copia[i];
-				copia[i]=copia[j];
-				copia[j]=eAux;
-
-
-			}
-
-		}
-	}
-
-	mostrarVariosAlbumes( copia, longitud);
-
-
-}
-
-
-
-void mostrarVariosAlbumesPorArtista(eAlbum arreglo[], int longitud){
-
-	//E. Realizar un solo listado de los álbumes ordenados por los siguientes criterios:
-	//o Importe (descendentemente)
-	//o Título (ascendentemente)
-
-
-	int i, j;
-
-	eAlbum eAux;
-
-	//se crea un clon de la estructura original para que la original no se desordene por los parametros de referencia
-	eAlbum copia[longitud];
-	for (i=0;i<longitud;i++)
-	{
-		copia[i]=arreglo[i];
-	}
-
-
-	for( i=0; i<longitud; i++ )
-	{
-
-		printf("\n artista %d:", copia[i].artista);
-		for(j=i+1;j<longitud;j++)
-		{
-			//reorganiza el clon segun el valor guardado en *.idArtista
-			if( copia[i].artista==copia[j].artista )
-			{
-				eAux=copia[i];
-				copia[i]=copia[j];
-				copia[j]=eAux;
-
-
-			}
-
-		}
-	}
-
-	mostrarVariosAlbumes( copia, longitud);
-
-
-}
-
-
-
-void mostrarVariosAlbumesPoranio(eAlbum arreglo[], int longitud){
-
-
-
-
-	int i, j;
-	int anio=1970; //anio mas bajo posible
-	eAlbum eAux;
-
-	//se crea un clon de la estructura original para que la original no se desordene por los parametros de referencia
-	eAlbum copia[longitud];
-	for (i=0;i<longitud;i++)
-	{
-		copia[i]=arreglo[i];
-	}
-
-
-
-	for(anio=1970; anio<MAX_ANIO; anio++)
-	{
-		for( i=0; i<longitud; i++ )
-		{
-			for(j=i+1;j<longitud;j++)
-			{
-				//reorganiza el clon segun el valor guardado en *.idArtista
-				if( copia[i].fechaPublicacion.aaaa==copia[j].artista )
+				// se activa el ordenamiento segundo si la posicion J esta ocupada y si precioJ>precioI
+				if( igualQueEnteros(albumes[j].estado, ESTADO_OCUPADO) && mayorQueEnteros(albumes[j].precio, albumes[i].precio) )
 				{
-					eAux=copia[i];
-					copia[i]=copia[j];
-					copia[j]=eAux;
-
+					eAux=albumes[i];
+					albumes[i]=albumes[j];
+					albumes[j]=eAux;
 
 				}
 
 			}
+
 		}
 	}
-	mostrarVariosAlbumes( copia, longitud);
+
+	// se invoca la funcion de mostrar varios con 3 como limite de iteraciones
+	eAlbum_mostrarVarios(albumes, 3, artistas, len_artistas, paises, len_paises, discograficas, len_discograficas);
+
+
+}
+
+
+void eAlbum_mostrarVariosPorArtista(eAlbum* albumes,int len_albumes, eArtista* artistas, int len_artistas, ePais* paises, int len_paises, eDiscografica* discograficas, int len_discograficas )
+{
+
+
+	int i, flag;
+	int artistaScan;
+
+
+	// se solicita al usuario que artista quiere ver
+	eArtista_mostrarVarios(artistas, len_artistas);
+	do
+	{
+
+		artistaScan= intScan("Elija de cual artista quiere ver ");
+
+		flag= intVerify(artistaScan, 1, len_artistas);
+		if (!flag)
+		{
+			printf("\nNo ingreso un artista valido. ");
+		}
+
+
+
+	}while(!flag);
+
+
+
+
+	// se recorre el bucle buscando albumes ocupados que ocupen el mismo id de artista
+	for( i=0; i<len_albumes; i++ )
+	{
+
+		// encontrado un album que coincida, se imprime
+		if( igualQueEnteros(albumes[i].estado, ESTADO_OCUPADO) && igualQueEnteros(albumes[i].artista, artistaScan) )
+		{
+			printf("\n");
+			eAlbum_mostrarUno(albumes[i], artistas, len_artistas, paises, len_paises, discograficas, len_discograficas);
+
+		}
+	}
+
+
+}
+
+void eAlbum_mostrarVariosPorAnio(eAlbum* albumes,int len_albumes, eArtista* artistas, int len_artistas, ePais* paises, int len_paises, eDiscografica* discograficas, int len_discograficas )
+{
+
+
+	int i, j;
+	eAlbum eAux;
+
+
+	// doble bucle de ordenamiento segun el año de publicacion
+	for( i=0; i<len_albumes; i++ )
+	{
+
+		// el segundo bucle se activa solo si la posicion I esta en estado ocupado
+		if( igualQueEnteros(albumes[i].estado, ESTADO_OCUPADO) )
+		{
+			for(j=i+1;j<len_albumes;j++)
+			{
+				// se activa el ordenamiento segundo si la posicion J esta ocupada y si fechaJ>fechaI
+				if( igualQueEnteros(albumes[j].estado, ESTADO_OCUPADO) && mayorQueEnteros(albumes[j].fecha, albumes[i].fecha) )
+				{
+					eAux=albumes[i];
+					albumes[i]=albumes[j];
+					albumes[j]=eAux;
+
+				}
+
+			}
+
+		}
+	}
+
+	eAlbum_mostrarVarios(albumes, len_albumes, artistas, len_artistas, paises, len_paises, discograficas, len_discograficas);
 
 
 }

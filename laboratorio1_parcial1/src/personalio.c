@@ -12,117 +12,12 @@
 #include <time.h>
 #include <math.h>
 #include <string.h>
+#include <ctype.h>
+
+
 #include "personalio.h"
 
 
-
-int intVerify(int numero, int minimo, int maximo){
-
-	int retornador;
-
-	if(minimo==1 && maximo==0)
-	{
-		if (numero>0)
-			retornador= 1;			//si minimo=1 y maximo=0 hay que verificar si el numero es positivo
-		else{
-			retornador=0;
-		}
-	}
-
-
-	else if(minimo==0 && maximo==-1)
-	{
-		if (numero<0)
-			retornador= 1;			//si minimo=0 y maximo=-1 hay que verificar si el numero es negativo
-		else{
-			retornador=0;
-		}
-	}
-
-	else if( minimo<=numero && numero<=maximo )		//verifica que el numero este en el intervalo dado
-	{
-		retornador= 1;
-
-
-	}
-	else
-	{
-
-		retornador =0;
-
-	}
-
-
-	return retornador; //retorna 1 porque no se cumplieron las condiciones deseadas
-
-}
-
-int floatVerify(float numero, int minimo, int maximo){
-
-	int retornador;
-
-	if(minimo==1 && maximo==0)
-	{
-		if (numero>0)
-			retornador= 0;			//si minimo=1 y maximo=0 hay que verificar si el numero es positivo
-		else{
-			printf("\nno ingreso un valor positivo");
-			retornador=1;
-		}
-	}
-
-
-	else if(minimo==0 && maximo==-1)
-	{
-		if (numero<0)
-			retornador= 0;			//si minimo=0 y maximo=-1 hay que verificar si el numero es negativo
-		else{
-			printf("\nno ingreso un valor negativo");
-			retornador=1;
-		}
-	}
-
-	else if( minimo<=numero && numero<=maximo )		//verifica que el numero este en el intervalo dado
-	{
-		retornador= 0;
-
-
-	}
-	else
-	{
-		printf("\nno ingreso valores segun lo esperado.");
-		retornador =1;				//anuncia que el valor no esta en el intervalo dado y retorna 1
-
-	}
-
-
-	return retornador; //retorna 1 porque no se cumplieron las condiciones deseadas
-
-}
-
-
-int mayorQue(float a, float b){
-	int retornador=0;
-
-	if (a>b)
-	{
-		retornador=1;
-	}
-
-	return retornador;
-}
-
-
-int mayorIgualQue(float a, float b){
-	int retornador=0;
-
-	if (a>=b)
-	{
-		retornador=1;
-	}
-
-	return retornador;
-}
 
 
 float basicMath(float a, float b, char operacion){
@@ -157,11 +52,39 @@ int isPair(int num){
 
 }
 
+int intString(char string[])
+{
+	int i;
+	int len;
+	int retorno =-1;
+
+
+	if(string != NULL)
+	{
+		retorno = 1;
+
+		len = strlen(string);
+
+		for(i=0;i<len;i++)
+		{
+			if(isdigit(string[i])==0 )
+			{
+				retorno =0;
+				break;
+
+			}
+		}
+	}
+
+
+	return retorno;
+
+}
 
 
 void stringScan(char string[], int longitud, char *mensaje){
 
-	char aux[1024];
+	char aux[STRING_SCAN];
 	int flag;
 
 	printf("%s", mensaje);
@@ -169,12 +92,12 @@ void stringScan(char string[], int longitud, char *mensaje){
 	do
 	{
 		fflush(stdin);
-		scanf("%[^\n]", aux);
+		gets(aux);
 
 		if ( strlen(aux)>longitud-1 )
 		{
 			flag=1;
-			printf("excedio la cantidad de caracteres permitidos_ ");
+			printf("EXCEDIO CANTIDAD DE CARACTERES PERMITIDOS. %s ", mensaje );
 		}
 		else
 		{
@@ -189,21 +112,81 @@ void stringScan(char string[], int longitud, char *mensaje){
 
 int intScan(char *mensaje){
 
-	int a;
-	printf("%s", mensaje);
-	fflush(stdin);
-	scanf("%d", &a);
-	return a;
+	int retorno;
+	int numerico;
+	char aux[30];
+
+		do
+		{
+		stringScan(aux,30, mensaje);
+		}while( intString(aux)<1 );
+
+	numerico = atoi(aux);
+
+	retorno = numerico;
+
+
+	return retorno;
 
 }
 
+
+int floatString(char string[])
+{
+	int i;
+	int len;
+	int retorno =-1;
+	int puntos=0;
+
+	if(string != NULL)
+	{
+		retorno = 1;
+
+		len = strlen(string);
+
+		for(i=0;i<len;i++)
+		{
+			if ( string[i]=='.' )
+			{
+				puntos++;
+				if( puntos>1 )
+				{
+					retorno =0;
+					break;
+				}
+			}
+			else if(isdigit(string[i])==0 )
+			{
+				retorno =0;
+				break;
+			}
+		}
+	}
+
+
+	return retorno;
+
+}
+
+
 float floatScan(char *mensaje){
 
-	float a;
-	printf("%s", mensaje);
-	fflush(stdin);
-	scanf("%f", &a);
-	return a;
+	float retorno;
+	float numerico;
+	char aux[30];
+
+		do
+		{
+		stringScan(aux,50, mensaje);
+		}while( floatString(aux)<1 );
+
+	numerico = atof(aux);
+
+
+	retorno = numerico;
+
+
+	return retorno;
 
 }
 
@@ -217,18 +200,6 @@ void vecIntScan(int vector[], int size){
 	}
 
 }
-//
-//int menu( char opciones[]  ){
-//	int opcion;
-//
-//	printf( opciones );
-//
-//	printf("\nOpcion: ");
-//	fflush(stdin);
-//	scanf("%d", &opcion);
-//
-//	return opcion;
-//}
 
 
 
@@ -312,12 +283,12 @@ void repetidosVectorEntero(int vector[], int len){
 	}
 }
 
-void cleanIntArray(int vector[], int len){
+void cleanIntArray(int vector[], int len, int num){
 
 	int i;
 
 	for(i=0;i<len;i++){
-		vector[i]=0;
+		vector[i]=num;
 	}
 
 }
@@ -344,4 +315,145 @@ int randomInt(int minimo, int maximo){
 
 }
 
+int pointerIsNull(void *p)
+{
+	return !(p);
+}
 
+void strCleanLeft(char* string, int len )
+{
+
+	int i, contador=0;
+
+	for(i=0;i<len;i++){
+		if (string[i]<'a' || string[i]>'z'){
+			contador++;
+		}
+		else{
+			break;
+		}
+	}
+
+
+	for (i=0;i<len-contador;i++){
+		string[i]=string[i+contador];
+	}
+
+
+}
+
+void strCleanMid(char* string, int len )
+{
+	int i, j;
+
+	for(i=0; i<len && string[i]!='\0' ;i++){
+
+		if ( !(string[i]>='a' && string[i]<='z') && string[i]!=' ' ){
+
+			for(j=0; i+j<len; j++){
+				string[i+j]=string[i+j+1];
+			}
+			--i;
+
+		}
+
+	}
+
+}
+
+void strSpcNot(char* string, int len )
+{
+	int i, j;
+	for(i=0; i<len && string[i]!='\0'; i++){
+
+		if( string[i]==' ' && string[i+1]==' ' ){
+
+			for(j=0; i+j<len; j++){
+
+				string[i+j]=string[i+j+1];
+			}
+			i--;
+
+		}
+	}
+}
+
+void upperStartName( char* string, int len )
+{
+	int i;
+
+	string[0]=toupper(string[0]);
+
+	for (i=0; i<len && string[i]!='\0'; i++){
+		if (string[i]==' '){
+			i++;
+			string[i]=toupper(string[i]);
+		}
+	}
+}
+
+void stringNameFormat(char* string, int len)
+{
+	strlwr(string);
+	strCleanLeft( string, len );
+	strCleanMid( string, len );
+	strSpcNot( string, len );
+	upperStartName( string, len );
+
+}
+
+void randomString(char* string, int len)
+{
+	char aux[len];
+	int i, j;
+	int randomLen;
+
+	do
+	{
+		// primer nombre
+		randomLen= randomInt(4, 12 );
+		for( i=0; i<randomLen; i++ )
+		{
+			aux[i]=randomInt(97, 122);
+		}
+
+		// espacio
+		aux[i]= ' ';
+
+		// segundo nombre
+		randomLen= randomInt(4, 12 );
+		for( j=i+1; j<randomLen+i; j++ )
+		{
+			aux[j]=randomInt(97, 122);
+		}
+
+		// fin de string
+		aux[j]= '\n';
+
+	}while( strlen(aux)> len-1  );
+
+	strcpy( string, aux );
+}
+
+int FILE_close( FILE* pArch)
+{
+	if( pArch!=NULL )
+	{
+		fclose(pArch);
+	}
+
+
+	return !pArch;
+}
+
+int pFree( void* p )
+{
+	if( p!=NULL )
+	{
+		free(p);
+	}
+
+
+	return !p;
+
+}

@@ -8,36 +8,23 @@
 #ifndef PERSONALIO_H_
 #define PERSONALIO_H_
 
-/**
- * @brief estructura de fecha en formato AAAA.MM.DD. ejemplo: 1999-12-31
- *
+
+/*
+ * CONSTANTES
  */
-typedef struct{
-	int aaaa;
-	int mm;
-	int dd;
-}eAaaaMmDd;
+#define STRING_SCAN 1024
 
 
-/**
- * @brief verifica si un numero entero esta en el intervalo dado. el intervalo [1;0] verifica si es positivo, el intervalo [0;-1] verifica si es negativo
- *
- * @param numero valor a evaluar
- * @param minimo minimo del intervalo
- * @param maximo maximo del intervalo
- * @return verdadero o falso
+/*
+ * BIBLIOTECAS
  */
-int intVerify(int numero, int minimo, int maximo);
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+#include <string.h>
+#include <ctype.h>
 
-/**
- * @brief verifica si un numero real esta en el intervalo dado. el intervalo [1;0] verifica si es positivo, el intervalo [0;-1] verifica si es negativo
- *
- * @param numero valor a evaluar
- * @param minimo minimo del intervalo
- * @param maximo maximo del intervalo
- * @return verdadero o falso
- */
-int floatVerify(float numero, int minimo, int maximo);
 
 /**
  * @brief hace un calculo correspondiente entre a y b dependiendo del parametro de operacion
@@ -48,26 +35,6 @@ int floatVerify(float numero, int minimo, int maximo);
  * @return a [operacion] b
  */
 float basicMath(float a, float b, char operacion);
-
-/**
- * @brief verifica que a>b
- *
- * @param a mayor
- * @param b menor
- * @return verdadero o falso logico
- */
-int mayorQue(float a, float b);
-
-
-/**
- * @brief verifica que a>=b
- *
- * @param a mayor
- * @param b menor
- * @return verdadero o falso logico
- */
-int mayorIgualQue(float a, float b);
-
 
 /**
  * @brief scanea una cadena de caracteres verificando que no se excedan las posiciones de memorias de la variable receptora de datos.
@@ -145,13 +112,20 @@ void vecIntSort(int vector[], int len, int dir);
 void repetidosVectorEntero(int vector[], int len);
 
 /**
- * @brief inicializa los valores de un vector tipo int
-  *
- * @param vector nombre del vector
- * @param len tamaño del vector
+ * @brief sets all vector's slots with num
+ *
+ * @param vector int*
+ * @param len vector's length
+ * @param num int
  */
-void cleanIntArray(int vector[], int len);
+void cleanIntArray(int vector[], int len, int num);
 
+/**
+ * @brief sets
+ *
+ * @param vector
+ * @param len
+ */
 void cleanCharArray(char vector[], int len);
 
 /**
@@ -164,14 +138,85 @@ void cleanCharArray(char vector[], int len);
  * @return random controlado
  */
 int randomInt(int minimo, int maximo);
-//
-///**
-// * @brief despliega una lista enumerada de opciones y retorna la opcion seleccionada
-// *
-// * @param opciones mensaje con lista de opciones
-// * @return valor tipo entero
-// */
-//int menu( char opciones[]  );
-//
+
+/**
+ * @brief checks if a pointer is NULL
+ *
+ * @param p pointer
+ * @return 1 if pointer=FALSE or returns 0 if pointer!=FALSE
+ */
+int pointerIsNull(void *p);
+
+/**
+ * @brief validates each character of a string checking if are all numeric chars
+ *
+ * @param string char*
+ * @return 1 if true, 0 if false
+ */
+int numericString(char string[]);
+
+/**
+ * @brief removes not alpha character in the left side of a string
+ *
+ * @param string char*
+ * @param len string's length
+ */
+void strCleanLeft(char* string, int len );
+
+/**
+ * @brief removes not alpha and not ' ' character in the middle side of a string
+ *
+ * @param string char*
+ * @param len string's length
+ */
+void strCleanMid(char* string, int len );
+
+/**
+ * @brief removes extra ' ' character in the middle side of a string
+ *
+ * @param string char*
+ * @param len string's length
+ */
+void strSpcNot(char* string, int len);
+
+/**
+ * @brief sets string from "this format" to "This Format"
+ *
+ * @param string char*
+ * @param len string's length
+ */
+void upperStartName( char* string, int len );
+
+/**
+ * @brief sets string from "laST_NamE naMe" to "Last_name Name"
+ *
+ * @param string char*
+ * @param len string's length
+ */
+void stringNameFormat(char* string, int len);
+
+/**
+ * @brief sets a random string
+ *
+ * @param string char*
+ * @param len string's length
+ */
+void randomString(char* string, int len);
+
+/**
+ * @brief closes a file if its open
+ *
+ * @param pArch file pointer
+ * @return 1 if ok, 0 if error
+ */
+int FILE_close( FILE* pArch);
+
+/**
+ * @brief closes a pointer if its open
+ *
+ * @param p pointer
+ * @return 1 if ok, 0 if error
+ */
+int pFree( void* p );
 
 #endif /* PERSONALIO_H_ */
